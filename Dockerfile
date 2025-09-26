@@ -29,10 +29,11 @@ RUN groupadd -r sismosve && useradd -r -g sismosve sismosve
 # Instalar dependencias mínimas del sistema
 RUN apt-get update && apt-get install -y \
     curl \
+    su-exec \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
-# Crear directorios de la aplicación
+# Crear directorios de la aplicación y establecer permisos
 WORKDIR /app
 
 # Copiar dependencias de Python desde builder
@@ -40,6 +41,10 @@ COPY --from=builder /root/.local /home/sismosve/.local
 
 # Copiar código de la aplicación
 COPY --chown=sismosve:sismosve . .
+
+# Copiar y hacer ejecutable el script de entrypoint
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Variables de entorno
 ENV PYTHONPATH=/app
@@ -49,9 +54,13 @@ ENV PATH=/home/sismosve/.local/bin:$PATH
 ENV FASTAPI_ENV=production
 ENV PORT=8000
 ENV HOST=0.0.0.0
+ENV LOG_FILE=/app/logs/sismos_api.log
 
-# Crear directorio para logs
-RUN mkdir -p /app/logs && chown -R sismosve:sismosve /app/logs
+# Crear directorio para logs y dar permisos de escritura al directorio completo
+RUN mkdir -p /app/logs && \
+    chown -R sismosve:sismosve /app && \
+    chmod -R 755 /app && \
+    chmod -R 777 /app/logs
 
 # Cambiar al usuario no-root
 USER sismosve
@@ -63,5 +72,5 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8000/api/health || exit 1
 
-# Comando por defecto
-CMD ["python", "run.py", "prod"]
+# Usar entrypoint personalizado
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
