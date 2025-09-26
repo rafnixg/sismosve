@@ -87,7 +87,7 @@ jobs:
         echo "📝 Check [Python Docker Hub](https://hub.docker.com/_/python/tags) for latest versions" >> docker-report.md
 
     - name: Create maintenance issue
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       with:
         script: |
           const fs = require('fs');
@@ -135,7 +135,7 @@ jobs:
     
     steps:
     - name: Delete old container images
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       with:
         script: |
           const packages = await github.rest.packages.getAllPackageVersionsForPackageOwnedByUser({
