@@ -1,4 +1,4 @@
-# SismosVE - Monitoreo de Sismos Venezuela
+# SismosVE - Monitoreo de Sismos Venezuela (sismosve.rafnixg.dev)
 
 ## 🎯 Descripción
 Aplicación web moderna para visualizar y monitorear sismos en Venezuela usando datos oficiales de FUNVISIS.
