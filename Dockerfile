@@ -1,6 +1,6 @@
 # Multi-stage Dockerfile para SismosVE
 # Etapa 1: Builder - Instalar dependencias
-FROM python:3.11-slim as builder
+FROM python:3.13-slim as builder
 
 # Instalar dependencias del sistema para compilación
 RUN apt-get update && apt-get install -y \
