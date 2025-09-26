@@ -6,104 +6,20 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -70.65,
-          9.86
-        ],
-        "marcador": "marker"
-      },
-      "properties": {
-        "depth": "35.1 km",
-        "value": "3.9",
-        "addressFormatted": "52 km al este de Bachaquero",
-        "time": "19:33",
-        "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "9.86",
-        "long": "-70.65"
-      }
-    },
-    {
-      "type": "Sismo",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -70.52,
-          10.0
-        ],
-        "marcador": "marker"
-      },
-      "properties": {
-        "depth": "33.6 km",
-        "value": "3.6",
-        "addressFormatted": "53 km al suroeste de Carora",
-        "time": "19:19",
-        "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "10.00",
-        "long": "-70.52"
-      }
-    },
-    {
-      "type": "Sismo",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -70.68,
-          9.91
-        ],
-        "marcador": "marker"
-      },
-      "properties": {
-        "depth": "16.2 km",
-        "value": "3.6",
-        "addressFormatted": "49 km al este de Bachaquero",
-        "time": "18:41",
-        "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "9.91",
-        "long": "-70.68"
-      }
-    },
-    {
-      "type": "Sismo",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -70.73,
-          9.9
-        ],
-        "marcador": "marker"
-      },
-      "properties": {
-        "depth": "14.3 km",
-        "value": "3.6",
-        "addressFormatted": "43 km al este de Bachaquero",
-        "time": "17:27",
-        "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "9.90",
-        "long": "-70.73"
-      }
-    },
-    {
-      "type": "Sismo",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -70.71,
-          9.87
+          -70.59,
+          10.06
         ],
         "marcador": "marker"
       },
       "properties": {
         "depth": "9.0 km",
-        "value": "3.6",
-        "addressFormatted": "45 km al este de Bachaquero",
-        "time": "17:25",
+        "value": "3.0",
+        "addressFormatted": "59 km al oeste de Carora",
+        "time": "09:06",
         "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "9.87",
-        "long": "-70.71"
+        "date": "26-09-2025",
+        "lat": "10.06",
+        "long": "-70.59"
       }
     },
     {
@@ -111,209 +27,20 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -70.38,
-          10.11
+          -70.69,
+          10.07
         ],
         "marcador": "marker"
       },
       "properties": {
-        "depth": "31.8 km",
-        "value": "3.7",
-        "addressFormatted": "34 km al oeste de Carora",
-        "time": "16:12",
+        "depth": "34.8 km",
+        "value": "3.2",
+        "addressFormatted": "49 km al este de Bachaquero",
+        "time": "08:39",
         "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "10.11",
-        "long": "-70.38"
-      }
-    },
-    {
-      "type": "Sismo",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -70.4,
-          10.27
-        ],
-        "marcador": "marker"
-      },
-      "properties": {
-        "depth": "35.0 km",
-        "value": "3.4",
-        "addressFormatted": "37 km al oeste de Carora",
-        "time": "15:46",
-        "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "10.27",
-        "long": "-70.40"
-      }
-    },
-    {
-      "type": "Sismo",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -70.65,
-          9.98
-        ],
-        "marcador": "marker"
-      },
-      "properties": {
-        "depth": "31.5 km",
-        "value": "3.7",
-        "addressFormatted": "52 km al este de Bachaquero",
-        "time": "14:34",
-        "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "9.98",
-        "long": "-70.65"
-      }
-    },
-    {
-      "type": "Sismo",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -70.33,
-          10.19
-        ],
-        "marcador": "marker"
-      },
-      "properties": {
-        "depth": "14.8 km",
-        "value": "3.8",
-        "addressFormatted": "28 km al oeste de Carora",
-        "time": "11:12",
-        "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "10.19",
-        "long": "-70.33"
-      }
-    },
-    {
-      "type": "Sismo",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -70.56,
-          10.14
-        ],
-        "marcador": "marker"
-      },
-      "properties": {
-        "depth": "34.6 km",
-        "value": "3.9",
-        "addressFormatted": "54 km al oeste de Carora",
-        "time": "11:08",
-        "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "10.14",
-        "long": "-70.56"
-      }
-    },
-    {
-      "type": "Sismo",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -70.96,
-          9.79
-        ],
-        "marcador": "marker"
-      },
-      "properties": {
-        "depth": "2.4 km",
-        "value": "3.7",
-        "addressFormatted": "25 km al sureste de Bachaquero",
-        "time": "07:47",
-        "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "9.79",
-        "long": "-70.96"
-      }
-    },
-    {
-      "type": "Sismo",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -70.82,
-          9.92
-        ],
-        "marcador": "marker1"
-      },
-      "properties": {
-        "depth": "5.0 km",
-        "value": "4.3",
-        "addressFormatted": "32 km al este de Bachaquero",
-        "time": "07:28",
-        "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "9.92",
-        "long": "-70.82"
-      }
-    },
-    {
-      "type": "Sismo",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -70.91,
-          9.79
-        ],
-        "marcador": "marker"
-      },
-      "properties": {
-        "depth": "14.1 km",
-        "value": "3.5",
-        "addressFormatted": "29 km al sureste de Bachaquero",
-        "time": "06:51",
-        "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "9.79",
-        "long": "-70.91"
-      }
-    },
-    {
-      "type": "Sismo",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -70.58,
-          9.91
-        ],
-        "marcador": "marker"
-      },
-      "properties": {
-        "depth": "7.5 km",
-        "value": "3.3",
-        "addressFormatted": "59 km al este de Bachaquero",
-        "time": "06:26",
-        "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "9.91",
-        "long": "-70.58"
-      }
-    },
-    {
-      "type": "Sismo",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -70.78,
-          9.73
-        ],
-        "marcador": "marker"
-      },
-      "properties": {
-        "depth": "35.2 km",
-        "value": "3.7",
-        "addressFormatted": "40 km al norte de Isnotu",
-        "time": "06:19",
-        "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "9.73",
-        "long": "-70.78"
+        "date": "26-09-2025",
+        "lat": "10.07",
+        "long": "-70.69"
       }
     },
     {
@@ -322,18 +49,18 @@
         "type": "Point",
         "coordinates": [
           -70.6,
-          9.8
+          9.94
         ],
         "marcador": "marker"
       },
       "properties": {
-        "depth": "5.7 km",
-        "value": "3.6",
-        "addressFormatted": "49 km al norte de Isnotu",
-        "time": "05:17",
+        "depth": "9.0 km",
+        "value": "3.2",
+        "addressFormatted": "56 km al este de Bachaquero",
+        "time": "08:05",
         "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "9.80",
+        "date": "26-09-2025",
+        "lat": "9.94",
         "long": "-70.60"
       }
     },
@@ -342,20 +69,20 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -70.68,
-          9.84
+          -70.77,
+          9.88
         ],
         "marcador": "marker"
       },
       "properties": {
-        "depth": "4.0 km",
+        "depth": "35.3 km",
         "value": "3.4",
-        "addressFormatted": "50 km al este de Bachaquero",
-        "time": "04:40",
+        "addressFormatted": "39 km al este de Bachaquero",
+        "time": "07:15",
         "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "9.84",
-        "long": "-70.68"
+        "date": "26-09-2025",
+        "lat": "9.88",
+        "long": "-70.77"
       }
     },
     {
@@ -363,20 +90,167 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -70.64,
-          9.8
+          -71.11,
+          9.74
         ],
         "marcador": "marker"
       },
       "properties": {
-        "depth": "35.2 km",
-        "value": "3.9",
-        "addressFormatted": "48 km al norte de Isnotu",
-        "time": "04:14",
+        "depth": "26.6 km",
+        "value": "3.1",
+        "addressFormatted": "24 km al sur de Bachaquero",
+        "time": "06:20",
         "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "9.80",
-        "long": "-70.64"
+        "date": "26-09-2025",
+        "lat": "9.74",
+        "long": "-71.11"
+      }
+    },
+    {
+      "type": "Sismo",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.82,
+          9.83
+        ],
+        "marcador": "marker"
+      },
+      "properties": {
+        "depth": "9.0 km",
+        "value": "3.4",
+        "addressFormatted": "36 km al sureste de Bachaquero",
+        "time": "05:33",
+        "country": "Venezuela",
+        "date": "26-09-2025",
+        "lat": "9.83",
+        "long": "-70.82"
+      }
+    },
+    {
+      "type": "Sismo",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.47,
+          9.84
+        ],
+        "marcador": "marker"
+      },
+      "properties": {
+        "depth": "35.1 km",
+        "value": "3.5",
+        "addressFormatted": "53 km al norte de Trujillo",
+        "time": "04:20",
+        "country": "Venezuela",
+        "date": "26-09-2025",
+        "lat": "9.84",
+        "long": "-70.47"
+      }
+    },
+    {
+      "type": "Sismo",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.62,
+          9.83
+        ],
+        "marcador": "marker"
+      },
+      "properties": {
+        "depth": "30.3 km",
+        "value": "3.4",
+        "addressFormatted": "51 km al norte de Isnotu",
+        "time": "04:09",
+        "country": "Venezuela",
+        "date": "26-09-2025",
+        "lat": "9.83",
+        "long": "-70.62"
+      }
+    },
+    {
+      "type": "Sismo",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.63,
+          9.82
+        ],
+        "marcador": "marker"
+      },
+      "properties": {
+        "depth": "19.8 km",
+        "value": "3.6",
+        "addressFormatted": "51 km al norte de Isnotu",
+        "time": "04:07",
+        "country": "Venezuela",
+        "date": "26-09-2025",
+        "lat": "9.82",
+        "long": "-70.63"
+      }
+    },
+    {
+      "type": "Sismo",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.91,
+          9.9
+        ],
+        "marcador": "marker"
+      },
+      "properties": {
+        "depth": "8.7 km",
+        "value": "3.4",
+        "addressFormatted": "23 km al sureste de Bachaquero",
+        "time": "03:55",
+        "country": "Venezuela",
+        "date": "26-09-2025",
+        "lat": "9.90",
+        "long": "-70.91"
+      }
+    },
+    {
+      "type": "Sismo",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.55,
+          9.99
+        ],
+        "marcador": "marker"
+      },
+      "properties": {
+        "depth": "26.9 km",
+        "value": "3.6",
+        "addressFormatted": "56 km al suroeste de Carora",
+        "time": "03:43",
+        "country": "Venezuela",
+        "date": "26-09-2025",
+        "lat": "9.99",
+        "long": "-70.55"
+      }
+    },
+    {
+      "type": "Sismo",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.58,
+          9.86
+        ],
+        "marcador": "marker"
+      },
+      "properties": {
+        "depth": "35.4 km",
+        "value": "3.4",
+        "addressFormatted": "57 km al norte de Isnotu",
+        "time": "03:20",
+        "country": "Venezuela",
+        "date": "26-09-2025",
+        "lat": "9.86",
+        "long": "-70.58"
       }
     },
     {
@@ -385,18 +259,18 @@
         "type": "Point",
         "coordinates": [
           -70.61,
-          9.85
+          9.79
         ],
         "marcador": "marker"
       },
       "properties": {
-        "depth": "30.5 km",
-        "value": "3.7",
-        "addressFormatted": "54 km al norte de Isnotu",
-        "time": "03:32",
+        "depth": "29.7 km",
+        "value": "3.1",
+        "addressFormatted": "47 km al norte de Isnotu",
+        "time": "03:09",
         "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "9.85",
+        "date": "26-09-2025",
+        "lat": "9.79",
         "long": "-70.61"
       }
     },
@@ -405,20 +279,146 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -70.64,
-          9.89
+          -70.57,
+          9.97
         ],
         "marcador": "marker"
       },
       "properties": {
-        "depth": "9.0 km",
-        "value": "3.5",
-        "addressFormatted": "52 km al este de Bachaquero",
-        "time": "03:30",
+        "depth": "32.9 km",
+        "value": "3.2",
+        "addressFormatted": "59 km al suroeste de Carora",
+        "time": "02:55",
         "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "9.89",
-        "long": "-70.64"
+        "date": "26-09-2025",
+        "lat": "9.97",
+        "long": "-70.57"
+      }
+    },
+    {
+      "type": "Sismo",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.59,
+          10.0
+        ],
+        "marcador": "marker"
+      },
+      "properties": {
+        "depth": "16.9 km",
+        "value": "3.4",
+        "addressFormatted": "58 km al este de Bachaquero",
+        "time": "02:39",
+        "country": "Venezuela",
+        "date": "26-09-2025",
+        "lat": "10.00",
+        "long": "-70.59"
+      }
+    },
+    {
+      "type": "Sismo",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.48,
+          10.02
+        ],
+        "marcador": "marker"
+      },
+      "properties": {
+        "depth": "35.1 km",
+        "value": "3.3",
+        "addressFormatted": "48 km al suroeste de Carora",
+        "time": "02:01",
+        "country": "Venezuela",
+        "date": "26-09-2025",
+        "lat": "10.02",
+        "long": "-70.48"
+      }
+    },
+    {
+      "type": "Sismo",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.57,
+          9.94
+        ],
+        "marcador": "marker"
+      },
+      "properties": {
+        "depth": "33.6 km",
+        "value": "3.2",
+        "addressFormatted": "60 km al suroeste de Carora",
+        "time": "02:00",
+        "country": "Venezuela",
+        "date": "26-09-2025",
+        "lat": "9.94",
+        "long": "-70.57"
+      }
+    },
+    {
+      "type": "Sismo",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.45,
+          10.03
+        ],
+        "marcador": "marker"
+      },
+      "properties": {
+        "depth": "28.0 km",
+        "value": "3.2",
+        "addressFormatted": "45 km al suroeste de Carora",
+        "time": "01:51",
+        "country": "Venezuela",
+        "date": "26-09-2025",
+        "lat": "10.03",
+        "long": "-70.45"
+      }
+    },
+    {
+      "type": "Sismo",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.55,
+          9.98
+        ],
+        "marcador": "marker"
+      },
+      "properties": {
+        "depth": "4.1 km",
+        "value": "3.3",
+        "addressFormatted": "56 km al suroeste de Carora",
+        "time": "01:43",
+        "country": "Venezuela",
+        "date": "26-09-2025",
+        "lat": "9.98",
+        "long": "-70.55"
+      }
+    },
+    {
+      "type": "Sismo",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.58,
+          9.88
+        ],
+        "marcador": "marker"
+      },
+      "properties": {
+        "depth": "22.8 km",
+        "value": "3.5",
+        "addressFormatted": "58 km al norte de Isnotu",
+        "time": "01:34",
+        "country": "Venezuela",
+        "date": "26-09-2025",
+        "lat": "9.88",
+        "long": "-70.58"
       }
     }
   ]

@@ -18,10 +18,13 @@ from .models import SismosCollection, SismosStats, ApiResponse
 
 
 # Configurar logging
+log_file = os.getenv("LOG_FILE", "/app/logs/sismos_api.log")
+os.makedirs(os.path.dirname(log_file), exist_ok=True)
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[logging.FileHandler("sismos_api.log"), logging.StreamHandler()],
+    handlers=[logging.FileHandler(log_file), logging.StreamHandler()],
 )
 
 logger = logging.getLogger(__name__)
