@@ -17,15 +17,47 @@ from .services import SismosService, UpdaterService
 from .models import SismosCollection, SismosStats, ApiResponse
 
 
-# Configurar logging
-log_file = os.getenv("LOG_FILE", "/app/logs/sismos_api.log")
-os.makedirs(os.path.dirname(log_file), exist_ok=True)
+# Configurar logging con manejo de errores
+def setup_logging():
+    """Configurar logging con fallback en caso de errores de permisos"""
+    handlers = []
+    
+    # Siempre incluir console output
+    console_handler = logging.StreamHandler()
+    handlers.append(console_handler)
+    
+    # Intentar configurar file logging
+    log_file = os.getenv("LOG_FILE")
+    if not log_file:
+        # Detectar entorno y configurar path apropiado
+        if os.path.exists("/app"):
+            log_file = "/app/logs/sismos_api.log"
+        else:
+            log_file = "sismos_api.log"
+    
+    try:
+        # Intentar crear directorio de logs
+        log_dir = os.path.dirname(log_file)
+        if log_dir:
+            os.makedirs(log_dir, exist_ok=True)
+        
+        # Agregar file handler si es posible
+        file_handler = logging.FileHandler(log_file)
+        handlers.append(file_handler)
+        print(f"📝 Logging configurado: {log_file}")
+    except (PermissionError, OSError) as e:
+        print(f"⚠️  No se pudo configurar file logging: {e}")
+        print("📝 Usando solo console logging")
+    
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        handlers=handlers,
+        force=True  # Sobrescribir configuración existente
+    )
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[logging.FileHandler(log_file), logging.StreamHandler()],
-)
+# Configurar logging
+setup_logging()
 
 logger = logging.getLogger(__name__)
 

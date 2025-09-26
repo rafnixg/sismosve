@@ -176,6 +176,7 @@ logs/
 sismos_api.log
 cache_clear.log
 updater.log
+test_*.log
 
 # Backups
 *.backup
