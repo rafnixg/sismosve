@@ -53,7 +53,7 @@ jobs:
           type=sha,prefix={{branch}}-
 
     - name: Build and push Docker image
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v6
       with:
         context: .
         platforms: linux/amd64,linux/arm64
@@ -66,14 +66,14 @@ jobs:
           BUILDKIT_INLINE_CACHE=1
 
     - name: Generate SBOM
-      uses: anchore/sbom-action@v0
+      uses: anchore/sbom-action@v0.17.2
       with:
         image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
         format: spdx-json
         output-file: sbom.spdx.json
 
     - name: Upload SBOM
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: sbom
         path: sbom.spdx.json
@@ -89,14 +89,14 @@ jobs:
     
     steps:
     - name: Run Trivy vulnerability scanner
-      uses: aquasecurity/trivy-action@master
+      uses: aquasecurity/trivy-action@0.24.0
       with:
         image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
         format: 'sarif'
         output: 'trivy-results.sarif'
 
     - name: Upload Trivy scan results to GitHub Security tab
-      uses: github/codeql-action/upload-sarif@v2
+      uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: 'trivy-results.sarif'
 
