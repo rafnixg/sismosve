@@ -45,7 +45,60 @@ jobs:
 
     - name: Test application startup
       run: |
-        python test_app.py
+        python -c "
+        import os
+        import sys
+        import tempfile
+        import traceback
+        
+        # Configurar logging para test
+        os.environ['LOG_FILE'] = os.path.join(tempfile.gettempdir(), 'test_sismos_api.log')
+        
+        print('🧪 Testing SismosVE application...')
+        
+        try:
+            # Test 1: Import and basic setup
+            print('📦 Testing imports...')
+            from app.main import app
+            from fastapi.testclient import TestClient
+            print('✅ Imports successful')
+            
+            # Test 2: Create test client
+            print('🔧 Creating test client...')
+            client = TestClient(app)
+            print('✅ Test client created')
+            
+            # Test 3: Health endpoint
+            print('🏥 Testing health endpoint...')
+            response = client.get('/api/health')
+            assert response.status_code == 200, f'Health check failed: {response.status_code}'
+            
+            data = response.json()
+            assert 'status' in data, 'Health response missing status field'
+            assert data['status'] == 'healthy', f'Expected healthy status, got {data.get(\"status\")}'
+            print('✅ Health check passed')
+            
+            # Test 4: Main endpoint
+            print('🌐 Testing main endpoint...')
+            response = client.get('/')
+            assert response.status_code == 200, f'Main endpoint failed: {response.status_code}'
+            content_type = response.headers.get('content-type', '')
+            assert 'text/html' in content_type, f'Expected HTML response, got {content_type}'
+            print('✅ Main endpoint test passed')
+            
+            print('🎉 All tests passed!')
+            
+        except ImportError as e:
+            print(f'❌ Import error: {e}')
+            print('📝 Traceback:')
+            traceback.print_exc()
+            sys.exit(1)
+        except Exception as e:
+            print(f'❌ Test failed: {e}')
+            print('📝 Traceback:')
+            traceback.print_exc()
+            sys.exit(1)
+        "
 
 #   code-quality:
 #     runs-on: ubuntu-latest
