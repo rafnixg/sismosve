@@ -1,0 +1,57 @@
+# Robots.txt para SismosVE
+# Sitio web de monitoreo de sismos en Venezuela
+
+User-agent: *
+Allow: /
+
+# Permitir acceso a recursos importantes
+Allow: /static/css/
+Allow: /static/js/
+Allow: /static/images/
+Allow: /api/sismos
+Allow: /api/sismos/stats
+Allow: /api/health
+
+# Restringir acceso a archivos administrativos
+Disallow: /api/update
+Disallow: /api/assets/versions
+Disallow: /static/docs/admin/
+Disallow: /*.json$
+Disallow: /*.log$
+Disallow: /*backup*
+
+# Sitemap
+Sitemap: {{ request.url._replace(path='/sitemap.xml') }}
+
+# Configuración para bots específicos
+User-agent: Googlebot
+Crawl-delay: 1
+
+User-agent: Bingbot
+Crawl-delay: 2
+
+User-agent: Slurp
+Crawl-delay: 3
+
+# Bots de redes sociales
+User-agent: facebookexternalhit
+Allow: /
+Allow: /static/images/
+
+User-agent: Twitterbot
+Allow: /
+Allow: /static/images/
+
+User-agent: LinkedInBot
+Allow: /
+Allow: /static/images/
+
+# Permitir bots académicos y de investigación
+User-agent: ia_archiver
+Allow: /
+
+User-agent: Wayback
+Allow: /
+
+# Host preferido (sin www)
+Host: sismos.rafnixg.dev

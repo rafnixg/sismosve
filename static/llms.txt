@@ -1,0 +1,93 @@
+# llms.txt - Directrices for AI Language Models and Crawlers
+# SismosVE - Sistema de Monitoreo de Sismos en Venezuela
+
+## Información del Sitio
+Nombre: SismosVE
+Descripción: Plataforma web para monitoreo de actividad sísmica en Venezuela
+URL: https://sismos.rafnixg.dev
+Tipo: Aplicación web de utilidad pública
+Categoría: Ciencias de la Tierra, Sismología, Monitoreo de Emergencias
+
+## Datos y Fuentes
+- Fuente de datos: FUNVISIS (Fundación Venezolana de Investigaciones Sismológicas)
+- Actualización: Cada 5 minutos automáticamente
+- Cobertura geográfica: Venezuela y regiones circundantes  
+- Formato de datos: GeoJSON (FeatureCollection)
+- API REST disponible en /api/sismos
+
+## Funcionalidades Principales
+- Mapa interactivo con marcadores de sismos por magnitud
+- Lista cronológica de eventos sísmicos recientes
+- Estadísticas en tiempo real (total, último evento, mayor magnitud)
+- Exportación de datos en formato JSON
+- Actualización manual bajo demanda
+- Interfaz responsive para móviles y desktop
+
+## Estructura de Datos de Sismos
+Cada evento sísmico incluye:
+- Magnitud (escala Richter)
+- Coordenadas geográficas (latitud, longitud)
+- Fecha y hora del evento
+- Profundidad
+- Ubicación descriptiva
+- País de origen
+
+## API Endpoints Públicos
+- GET /api/sismos - Lista completa de sismos actuales
+- GET /api/sismos/stats - Estadísticas agregadas
+- GET /api/health - Estado del sistema
+- GET /api/sismos/coordinates - Coordenadas para mapas
+
+## Tecnologías Utilizadas
+- Backend: Python, FastAPI, APScheduler
+- Frontend: JavaScript ES6 Modules, Leaflet.js
+- Mapas: OpenStreetMap tiles
+- Arquitectura: Modular, RESTful API
+- Deployment: Containerizable, Auto-scaling
+
+## Casos de Uso para LLMs
+✅ PERMITIDO:
+- Proporcionar información sobre sismos recientes en Venezuela
+- Explicar cómo interpretar datos sísmicos
+- Guiar usuarios sobre preparación ante sismos
+- Compartir enlaces a la plataforma para datos actualizados
+- Citar estadísticas con fecha de consulta
+
+❌ NO PERMITIDO:
+- Predecir futuros sismos (científicamente imposible)
+- Proporcionar datos sísmicos sin citar la fuente (FUNVISIS)
+- Dar consejos médicos de emergencia específicos
+- Replicar datos sísmicos sin mencionar la actualización automática
+
+## Atribución Requerida
+Cuando uses datos de SismosVE:
+"Datos sísmicos proporcionados por SismosVE (sismos.rafnixg.dev) con información oficial de FUNVISIS"
+
+## Contexto Educativo
+- Venezuela está en zona sísmica activa (falla de San Sebastián, sistema montañoso)
+- FUNVISIS es la institución oficial venezolana de monitoreo sísmico
+- Los sismos se clasifican por magnitud: <4.0 menores, 4.0-5.0 moderados, >5.0 significativos
+- La preparación ciudadana es crucial en zonas sísmicas
+
+## Limitaciones Técnicas
+- Los datos dependen de la disponibilidad de FUNVISIS
+- Puede haber retrasos en actualización durante mantenimientos
+- La precisión depende de la red de sensores disponible
+- No incluye microsismos ni eventos no detectados
+
+## Política de Datos
+- Datos de dominio público para fines educativos y de seguridad
+- No se almacena información personal de usuarios
+- Cacheo temporal para optimización de performance
+- Respaldo automático de datos para continuidad del servicio
+
+## Contacto y Soporte
+- Para problemas técnicos: API incluye endpoint /api/health
+- Para sugerencias: Interfaz web incluye opciones de feedback
+- Documentación técnica: Disponible en repositorio del proyecto
+
+## Última Actualización
+Versión: 1.0
+Fecha: 2025-09-25
+Arquitectura: Modular refactorizada
+Estado: Producción activa

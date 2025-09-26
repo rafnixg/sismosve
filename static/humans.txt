@@ -1,0 +1,84 @@
+# humanstxt.org - SismosVE Team Information
+
+/* TEAM */
+	
+	Lead Developer: Rafnix Guzman
+	Site: https://sismo.rafnixg.dev
+	Contact: dev [at] sismo.rafnixg.dev
+	Location: Remote
+
+/* THANKS */
+
+	FUNVISIS: Por proporcionar datos sísmicos oficiales
+	OpenStreetMap: Por los tiles de mapas gratuitos
+	Leaflet.js: Por la excelente biblioteca de mapas
+	FastAPI: Viva Latam 
+	Python Community: Por las herramientas increíbles
+	Open Source Contributors: Por hacer esto posible
+
+/* SITE */
+
+	Last update: 2025/09/25
+	Language: Spanish / Español
+	Doctype: HTML5
+	Framework: FastAPI + JavaScript ES6 Modules
+	Tools: Python, Leaflet.js, APScheduler
+	Architecture: Modular, RESTful API
+	Deployment: Containerizable
+
+/* DATA SOURCES */
+
+	Primary: FUNVISIS (Fundación Venezolana de Investigaciones Sismológicas)
+	Maps: OpenStreetMap
+	Update Frequency: Every 5 minutes
+	Geographic Coverage: Venezuela and surrounding regions
+
+/* TECHNICAL SPECS */
+
+	Backend: Python 3.8+, FastAPI, APScheduler
+	Frontend: Vanilla JavaScript ES6, Leaflet.js
+	Database: JSON files with automatic backup
+	API: RESTful endpoints
+	Responsive: Mobile-first design
+	Performance: Cached assets, optimized loading
+	Security: HTTPS, CSP headers, input validation
+
+/* CONTACT */
+
+	General: info [at] sismo.rafnixg.dev
+	Technical: tech [at] sismo.rafnixg.dev
+	Security: security [at] sismo.rafnixg.dev
+	Legal: legal [at] sismo.rafnixg.dev
+
+/* CONTRIBUTING */
+
+	Feedback: Always welcome
+	Bug Reports: Use GitHub issues or contact us
+	Feature Requests: Send detailed proposals
+	Translations: Help us reach more people
+	Donations: We're a free public service
+
+/* LICENSE */
+
+	Data: Public domain (from FUNVISIS)
+	Code: Check repository for license details
+	Design: © 2025 SismosVE
+	Third-party: Respective owners
+
+/* MISSION */
+
+	Providing free, seismic monitoring
+	for Venezuela to help citizens stay informed
+	about earthquake activity in their region.
+	
+	We believe in open data, transparency,
+	and using technology for public good.
+
+                            _..._
+                          .'     '.
+                         /  _   _  \
+                        |  (o)_(o)  |
+                         \    ∧    /
+                          '.  ‾  .'
+                            |___|
+                    SismosVE - Always Watching

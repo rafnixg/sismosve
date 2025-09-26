@@ -1,0 +1,388 @@
+class SismosApp {
+    constructor() {
+        this.rawData = null;
+        this.transformedData = null;
+        this.map = null;
+        this.markersGroup = null;
+        this.init();
+    }
+
+    init() {
+        this.bindEvents();
+        this.initMap();
+        this.loadData(); // Cargar datos automáticamente al inicializar
+    }
+
+    bindEvents() {
+        document.getElementById('loadData').addEventListener('click', () => this.loadData());
+        document.getElementById('exportData').addEventListener('click', () => this.exportData());
+        
+        // Agregar botón para forzar actualización
+        const forceUpdateBtn = document.createElement('button');
+        forceUpdateBtn.id = 'forceUpdate';
+        forceUpdateBtn.className = 'btn-secondary';
+        forceUpdateBtn.textContent = 'Actualizar Datos';
+        forceUpdateBtn.addEventListener('click', () => this.forceUpdate());
+        
+        const controlsDiv = document.querySelector('.controls');
+        controlsDiv.insertBefore(forceUpdateBtn, document.getElementById('exportData'));
+    }
+
+    async loadData() {
+        const statusEl = document.getElementById('status');
+        const loadBtn = document.getElementById('loadData');
+        const exportBtn = document.getElementById('exportData');
+
+        try {
+            // Mostrar estado de carga
+            statusEl.innerHTML = '<span class="loading-spinner"></span>Obteniendo datos desde la API...';
+            statusEl.className = 'status loading';
+            loadBtn.disabled = true;
+
+            // Obtener datos desde la API local
+            const response = await fetch('/api/sismos');
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            this.transformedData = await response.json();
+            
+            // Actualizar UI
+            this.updateUI();
+            
+            statusEl.textContent = `Datos cargados correctamente (${this.transformedData.features.length} sismos)`;
+            statusEl.className = 'status success';
+            exportBtn.disabled = false;
+
+        } catch (error) {
+            console.error('Error al cargar los datos:', error);
+            statusEl.textContent = 'Error al cargar los datos. Verifica la conexión con la API.';
+            statusEl.className = 'status error';
+            
+            // Intentar cargar datos de respaldo
+            this.showFallbackData();
+        } finally {
+            loadBtn.disabled = false;
+        }
+    }
+
+    transformData(data) {
+        // Los datos ya vienen transformados desde la API
+        if (!data || !data.features) {
+            throw new Error('Datos inválidos');
+        }
+        return data;
+    }
+
+    showFallbackData() {
+        // Intentar usar datos de respaldo desde la API
+        fetch('/api/sismos')
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('API no disponible');
+            })
+            .then(data => {
+                this.transformedData = data;
+                this.updateUI();
+                
+                const statusEl = document.getElementById('status');
+                statusEl.textContent = `Mostrando datos de respaldo (${this.transformedData.features.length} sismos)`;
+                statusEl.className = 'status';
+                document.getElementById('exportData').disabled = false;
+            })
+            .catch(error => {
+                console.error('Error al cargar datos de respaldo:', error);
+                const statusEl = document.getElementById('status');
+                statusEl.textContent = 'No se pudieron cargar los datos. API no disponible.';
+                statusEl.className = 'status error';
+            });
+    }
+
+    updateUI() {
+        this.updateStats();
+        this.renderEarthquakes();
+        this.updateMap();
+    }
+
+    updateStats() {
+        const features = this.transformedData.features;
+        const statsEl = document.getElementById('stats');
+        
+        // Total de sismos
+        document.getElementById('totalCount').textContent = features.length;
+        
+        // Último sismo (el más reciente por fecha y hora)
+        const latest = this.getLatestEarthquake(features);
+        document.getElementById('lastEarthquake').textContent = latest ? 
+            `${latest.properties.time} - ${latest.properties.date}` : '-';
+        
+        // Mayor magnitud
+        const maxMag = Math.max(...features.map(f => parseFloat(f.properties.value) || 0));
+        document.getElementById('maxMagnitude').textContent = maxMag.toFixed(1);
+        
+        statsEl.style.display = 'grid';
+    }
+
+    getLatestEarthquake(features) {
+        return features.reduce((latest, current) => {
+            if (!latest) return current;
+            
+            const currentDateTime = this.parseDateTime(current.properties.date, current.properties.time);
+            const latestDateTime = this.parseDateTime(latest.properties.date, latest.properties.time);
+            
+            return currentDateTime > latestDateTime ? current : latest;
+        }, null);
+    }
+
+    parseDateTime(date, time) {
+        // Convertir fecha DD-MM-YYYY y hora HH:MM a Date
+        try {
+            const [day, month, year] = date.split('-');
+            const [hours, minutes] = time.split(':');
+            return new Date(year, month - 1, day, hours, minutes);
+        } catch {
+            return new Date(0);
+        }
+    }
+
+    renderEarthquakes() {
+        const listEl = document.getElementById('earthquakeList');
+        const features = this.transformedData.features;
+        
+        if (features.length === 0) {
+            listEl.innerHTML = `
+                <div class="empty-state">
+                    <h3>No hay datos disponibles</h3>
+                    <p>No se encontraron registros de sismos</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Ordenar por fecha/hora más reciente
+        const sortedFeatures = [...features].sort((a, b) => {
+            const dateA = this.parseDateTime(a.properties.date, a.properties.time);
+            const dateB = this.parseDateTime(b.properties.date, b.properties.time);
+            return dateB - dateA;
+        });
+
+        listEl.innerHTML = sortedFeatures.map(feature => {
+            const magnitude = parseFloat(feature.properties.value) || 0;
+            const magnitudeClass = this.getMagnitudeClass(magnitude);
+            
+            return `
+                <div class="earthquake-item ${magnitudeClass}-magnitude">
+                    <div class="earthquake-header">
+                        <div class="magnitude ${magnitudeClass}">
+                            ${magnitude.toFixed(1)}
+                        </div>
+                        <div class="earthquake-info">
+                            <div class="location">${feature.properties.addressFormatted}</div>
+                            <div class="datetime">
+                                📅 ${feature.properties.date} ⏰ ${feature.properties.time}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="earthquake-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Profundidad</div>
+                            <div class="detail-value">${feature.properties.depth}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Latitud</div>
+                            <div class="detail-value">${feature.properties.lat}°</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Longitud</div>
+                            <div class="detail-value">${feature.properties.long}°</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">País</div>
+                            <div class="detail-value">${feature.properties.country}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    getMagnitudeClass(magnitude) {
+        if (magnitude >= 5.0) return 'high';
+        if (magnitude >= 4.0) return 'medium';
+        return 'low';
+    }
+
+    async forceUpdate() {
+        const statusEl = document.getElementById('status');
+        const forceUpdateBtn = document.getElementById('forceUpdate');
+        
+        try {
+            statusEl.innerHTML = '<span class="loading-spinner"></span>Forzando actualización...';
+            statusEl.className = 'status loading';
+            forceUpdateBtn.disabled = true;
+            
+            const response = await fetch('/api/update', { method: 'POST' });
+            const result = await response.json();
+            
+            if (result.success) {
+                statusEl.textContent = 'Datos actualizados correctamente';
+                statusEl.className = 'status success';
+                
+                // Recargar datos después de la actualización
+                setTimeout(() => this.loadData(), 1000);
+            } else {
+                statusEl.textContent = 'Error al actualizar datos';
+                statusEl.className = 'status error';
+            }
+            
+        } catch (error) {
+            console.error('Error al forzar actualización:', error);
+            statusEl.textContent = 'Error al comunicarse con la API';
+            statusEl.className = 'status error';
+        } finally {
+            forceUpdateBtn.disabled = false;
+        }
+    }
+
+    initMap() {
+        // Inicializar el mapa centrado en Venezuela
+        this.map = L.map('map').setView([8.0, -66.0], 6);
+        
+        // Agregar capa de tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 18,
+        }).addTo(this.map);
+        
+        // Crear grupo de marcadores
+        this.markersGroup = L.layerGroup().addTo(this.map);
+        
+        // Agregar control de escala
+        L.control.scale().addTo(this.map);
+    }
+
+    updateMap() {
+        if (!this.map || !this.transformedData) return;
+        
+        // Limpiar marcadores existentes
+        this.markersGroup.clearLayers();
+        
+        const features = this.transformedData.features;
+        const bounds = [];
+        
+        features.forEach((feature, index) => {
+            const lat = parseFloat(feature.properties.lat);
+            const lng = parseFloat(feature.properties.long);
+            const magnitude = parseFloat(feature.properties.value) || 0;
+            
+            if (isNaN(lat) || isNaN(lng)) return;
+            
+            bounds.push([lat, lng]);
+            
+            // Determinar el color y tamaño basado en la magnitud
+            const { color, radius } = this.getMarkerStyle(magnitude);
+            
+            // Crear marcador circular
+            const marker = L.circleMarker([lat, lng], {
+                radius: radius,
+                fillColor: color,
+                color: '#fff',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.8
+            });
+            
+            // Crear popup con información del sismo
+            const popupContent = this.createPopupContent(feature, index);
+            marker.bindPopup(popupContent);
+            
+            // Agregar evento hover
+            marker.on('mouseover', function() {
+                this.openPopup();
+            });
+            
+            // Agregar al grupo de marcadores
+            this.markersGroup.addLayer(marker);
+        });
+        
+        // Ajustar vista para mostrar todos los puntos
+        if (bounds.length > 0) {
+            this.map.fitBounds(bounds, { padding: [20, 20] });
+        }
+    }
+
+    getMarkerStyle(magnitude) {
+        if (magnitude >= 5.0) {
+            return { color: '#f44336', radius: 12 }; // Rojo - grande
+        } else if (magnitude >= 4.0) {
+            return { color: '#ff9800', radius: 10 }; // Naranja - mediano
+        } else {
+            return { color: '#4CAF50', radius: 8 };  // Verde - pequeño
+        }
+    }
+
+    createPopupContent(feature, index) {
+        const magnitude = parseFloat(feature.properties.value) || 0;
+        const magnitudeClass = this.getMagnitudeClass(magnitude);
+        
+        return `
+            <div class="popup-content">
+                <div class="popup-header">
+                    <span class="popup-magnitude ${magnitudeClass}">${magnitude.toFixed(1)}</span>
+                    <span class="popup-location">${feature.properties.addressFormatted}</span>
+                </div>
+                <div class="popup-details">
+                    <div><strong>📅 Fecha:</strong> ${feature.properties.date}</div>
+                    <div><strong>⏰ Hora:</strong> ${feature.properties.time}</div>
+                    <div><strong>📏 Profundidad:</strong> ${feature.properties.depth}</div>
+                    <div><strong>🌍 Coordenadas:</strong> ${feature.properties.lat}°, ${feature.properties.long}°</div>
+                </div>
+                <button onclick="app.highlightEarthquake(${index})" class="popup-button">
+                    Ver en lista
+                </button>
+            </div>
+        `;
+    }
+
+    highlightEarthquake(index) {
+        const earthquakeItems = document.querySelectorAll('.earthquake-item');
+        if (earthquakeItems[index]) {
+            // Scroll hasta el elemento
+            earthquakeItems[index].scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+            
+            // Agregar efecto de highlight
+            earthquakeItems[index].classList.add('highlighted');
+            setTimeout(() => {
+                earthquakeItems[index].classList.remove('highlighted');
+            }, 3000);
+        }
+    }
+
+    exportData() {
+        if (!this.transformedData) return;
+
+        const dataStr = JSON.stringify(this.transformedData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(dataBlob);
+        link.download = `sismos_transformados_${new Date().toISOString().split('T')[0]}.json`;
+        link.click();
+        
+        URL.revokeObjectURL(link.href);
+    }
+}
+
+// Variable global para acceso desde popups
+let app;
+
+// Inicializar la aplicación cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', () => {
+    app = new SismosApp();
+});

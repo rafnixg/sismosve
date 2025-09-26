@@ -1,0 +1,121 @@
+{
+  "name": "SismosVE - Monitoreo de Sismos Venezuela",
+  "short_name": "SismosVE",
+  "description": "Monitoreo de sismos en Venezuela con datos oficiales de FUNVISIS",
+  "version": "1.0.0",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#1976d2",
+  "background_color": "#ffffff",
+  "lang": "es-VE",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/static/images/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/images/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/images/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/images/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/images/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/images/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/images/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/images/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["utilities", "education", "news"],
+  "screenshots": [
+    {
+      "src": "/static/images/screenshot-desktop.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "Vista de escritorio con mapa y lista de sismos"
+    },
+    {
+      "src": "/static/images/screenshot-mobile.jpg",
+      "sizes": "360x640",
+      "type": "image/jpeg",  
+      "platform": "narrow",
+      "label": "Vista móvil optimizada"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ver Mapa",
+      "short_name": "Mapa",
+      "description": "Abrir directamente el mapa de sismos",
+      "url": "/#map",
+      "icons": [
+        {
+          "src": "/static/images/shortcut-map.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Exportar Datos",
+      "short_name": "Exportar",
+      "description": "Descargar datos actuales en JSON",
+      "url": "/#export",
+      "icons": [
+        {
+          "src": "/static/images/shortcut-export.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "navigate-new"]
+  },
+  "handle_links": "preferred",
+  "protocol_handlers": [
+    {
+      "protocol": "web+sismo",
+      "url": "/?sismo=%s"
+    }
+  ]
+}

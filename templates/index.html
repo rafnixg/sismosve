@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es" prefix="og: h    <meta name="twitter:image" content="{{ request.url.scheme }}://{{ request.url.netloc }}/static/images/sismos-venezuela-preview.jpg";tps://ogp.me/ns#">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Básico -->
+    <title>Sismos Venezuela - Monitoreo | FUNVISIS</title>
+    <meta name="description" content="Visualiza sismos en Venezuela. Datos oficiales de FUNVISIS con mapa interactivo, estadísticas actualizadas cada 5 minutos y exportación de datos.">
+    <meta name="keywords" content="sismos venezuela, terremotos venezuela, funvisis, sismología, monitoreo sísmico, mapa sismos, emergencias venezuela">
+    <meta name="author" content="SismosVE">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="Spanish">
+    <meta name="revisit-after" content="1 day">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+        <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:title" content="Sismos Venezuela - Monitoreo | FUNVISIS">
+    <meta property="og:description" content="Visualiza sismos en Venezuela. Datos oficiales de FUNVISIS con mapa interactivo y estadísticas actualizadas cada 5 minutos.">
+    <meta property="og:image" content="{{ request.url.scheme }}://{{ request.url.netloc }}/static/images/sismos-venezuela-preview.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Mapa de sismos en Venezuela con datos e">
+    <meta property="og:site_name" content="SismosVE">
+    <meta property="og:locale" content="es_VE">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ request.url }}">
+    <meta property="og:title" content="Sismos Venezuela - Monitoreo | FUNVISIS">
+    <meta property="og:description" content="Visualiza sismos en Venezuela. Datos oficiales de FUNVISIS con mapa interactivo y estadísticas actualizadas cada 5 minutos.">
+    <meta property="og:image" content="{{ request.url.scheme }}://{{ request.url.netloc }}/static/images/sismos-venezuela-preview.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Mapa de sismos en Venezuela con datos e">
+    <meta property="og:site_name" content="SismosVE">
+    <meta property="og:locale" content="es_VE">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ request.url }}">
+    <meta name="twitter:title" content="Sismos Venezuela - Monitoreo e">
+    <meta name="twitter:description" content="Visualiza sismos en Venezuela. Datos oficiales de FUNVISIS con mapa interactivo y estadísticas actualizadas.">
+    <meta name="twitter:image" content="{{ request.url.scheme }}://{{ request.url.netloc }}/static/images/sismos-venezuela-preview.jpg">
+    <meta name="twitter:image:alt" content="Mapa de sismos en Venezuela con datos e">
+    <meta name="twitter:creator" content="@SismosVE">
+    <meta name="twitter:site" content="@SismosVE">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">
+    <link rel="manifest" href="/static/manifest.json">
+    
+    <!-- Preconnect para performance -->
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="dns-prefetch" href="https://tile.openstreetmap.org">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ request.url }}">
+    
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "SismosVE - Monitoreo de Sismos Venezuela",
+        "description": "Aplicación web para monitorear sismos en Venezuela con datos oficiales de FUNVISIS",
+        "url": "{{ request.url }}",
+        "applicationCategory": "Utilidad",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "creator": {
+            "@type": "Organization",
+            "name": "SismosVE",
+            "url": "{{ request.url }}"
+        },
+        "datePublished": "2025-09-25",
+        "dateModified": "2025-09-25",
+        "inLanguage": "es-VE",
+        "isAccessibleForFree": true,
+        "keywords": "sismos, venezuela, terremotos, funvisis, monitoreo",
+        "image": "{{ request.url.scheme }}://{{ request.url.netloc }}/static/images/sismos-venezuela-preview.jpg",
+        "screenshot": "{{ request.url.scheme }}://{{ request.url.netloc }}/static/images/sismos-venezuela-screenshot.jpg"
+    }
+    </script>
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="/static/styles.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    
+    <!-- Script para limpiar cache de Cloudflare Tunnel -->
+    <script>
+        // Forzar recarga de recursos si están cacheados
+        const cacheBuster = Date.now();
+        document.addEventListener('DOMContentLoaded', function() {
+            // Limpiar cache del navegador
+            if ('caches' in window) {
+                caches.keys().then(function(names) {
+                    names.forEach(function(name) {
+                        caches.delete(name);
+                    });
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header role="banner">
+            <h1>🌍 Sismos en Venezuela</h1>
+            <p>Monitoreo sísmico con datos oficiales de FUNVISIS</p>
+            <p class="subtitle">Actualización automática cada 5 minutos • Mapa interactivo • Exportación de datos</p>
+        </header>
+
+        <main role="main">
+            <div class="controls">
+                <button id="loadData" class="btn-primary">Recargar Datos</button>
+                <button id="exportData" class="btn-secondary" disabled>Exportar JSON</button>
+                <div class="status" id="status">Cargando datos...</div>
+            </div>
+
+            <div class="stats" id="stats" style="display: none;">
+                <div class="stat-card">
+                    <h3>Total Sismos</h3>
+                    <span id="totalCount">0</span>
+                </div>
+                <div class="stat-card">
+                    <h3>Último Sismo</h3>
+                    <span id="lastEarthquake">-</span>
+                </div>
+                <div class="stat-card">
+                    <h3>Mayor Magnitud</h3>
+                    <span id="maxMagnitude">-</span>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <section class="map-container" role="region" aria-labelledby="map-title">
+                    <h2 id="map-title">📍 Mapa Interactivo de Sismos</h2>
+                    <div id="map" role="img" aria-label="Mapa interactivo mostrando la ubicación de sismos en Venezuela"></div>
+                </section>
+                
+                <section class="list-container" role="region" aria-labelledby="list-title">
+                    <h2 id="list-title">📋 Lista de Sismos Recientes</h2>
+                    <div class="earthquake-list" id="earthquakeList" role="list" aria-live="polite" aria-label="Lista de sismos ordenados por fecha"></div>
+                </section>
+            </div>
+        </main>
+        
+        <footer role="contentinfo">
+            <p>&copy; 2025 Sismos. Datos proporcionados por <a href="http://www.funvisis.gob.ve" target="_blank" rel="noopener">FUNVISIS</a></p>
+            <p>
+                <a href="/api/sismos" target="_blank" rel="noopener">API REST</a> • 
+                <a href="/static/docs/privacy.html" target="_blank">Privacidad</a> • 
+                <a href="/static/docs/terms.html" target="_blank">Términos</a> • 
+            </p>
+        </footer>
+    </div>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    
+    <!-- Aplicación modular SismosVE -->
+    <script type="module" src="/static/js/main.js"></script>
+</body>
+</html>

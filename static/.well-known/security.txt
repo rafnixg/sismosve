@@ -1,0 +1,56 @@
+# Security Policy for SismosVE
+# RFC 9116 compliant security.txt
+
+Contact: mailto:security@sismo.rafnixg.dev
+Expires: 2026-09-25T23:59:59.000Z
+Encryption: https://sismo.rafnixg.dev/.well-known/pgp-key.txt
+Preferred-Languages: es, en
+Canonical: https://sismo.rafnixg.dev/.well-known/security.txt
+
+# Scope
+# This security policy applies to:
+# - Main application: https://sismo.rafnixg.dev
+# - API endpoints: https://sismo.rafnixg.dev/api/*
+# - Static resources: https://sismo.rafnixg.dev/static/*
+
+# What to report
+# Please report any security vulnerabilities including:
+# - Authentication bypass
+# - Cross-site scripting (XSS)
+# - SQL injection (though we don't use SQL)
+# - Data exposure
+# - API security issues
+# - Server misconfigurations
+
+# What NOT to report
+# - Issues in third-party dependencies (report to upstream)
+# - Social engineering attempts
+# - Physical security issues
+# - Denial of service from normal usage patterns
+
+# Response time
+# We aim to respond to security reports within 48 hours
+# and provide updates every 72 hours until resolution
+
+# Safe Harbor
+# We support responsible disclosure and will not pursue
+# legal action against security researchers who:
+# - Make a good faith effort to avoid privacy violations
+# - Do not access or modify user data
+# - Do not perform attacks that degrade service
+# - Report vulnerabilities promptly
+# - Do not disclose issues publicly before we've had time to fix them
+
+# Recognition
+# We maintain a hall of fame for security researchers at:
+# https://sismo.rafnixg.dev/security-thanks
+
+# Hiring
+# If you're interested in security roles, contact: jobs@sismo.rafnixg.dev
+
+# Additional Information
+# - We use HTTPS everywhere
+# - We implement CSP headers
+# - We follow OWASP security guidelines
+# - We perform regular security audits
+# - We have incident response procedures
