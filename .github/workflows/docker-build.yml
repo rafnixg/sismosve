@@ -7,9 +7,21 @@ on:
       - develop
     tags:
       - 'v*'
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+      - 'docs/**'
+      - 'LICENSE'
+      - '.gitignore'
   pull_request:
     branches:
       - main
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+      - 'docs/**'
+      - 'LICENSE'
+      - '.gitignore'
   workflow_dispatch:
 
 env:

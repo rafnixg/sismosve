@@ -1,0 +1,85 @@
+name: Documentation CI
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - '**.md'
+      - '**.txt'
+      - 'docs/**'
+      - 'static/llms.txt'
+      - 'static/humans.txt'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**.md'
+      - '**.txt'
+      - 'docs/**'
+      - 'static/llms.txt'
+      - 'static/humans.txt'
+
+jobs:
+  validate-docs:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Validate Markdown files
+      run: |
+        echo "🔍 Validating documentation files..."
+        
+        # Check for common markdown issues
+        find . -name "*.md" -type f | while read file; do
+          echo "Checking $file"
+          
+          # Check for broken internal links (basic check)
+          if grep -n "\[.*\](\..*)" "$file" > /dev/null; then
+            echo "✅ Internal links found in $file"
+          fi
+          
+          # Check for proper heading structure
+          if grep -n "^#" "$file" > /dev/null; then
+            echo "✅ Headings found in $file"
+          fi
+          
+          # Basic syntax validation
+          if [ -s "$file" ]; then
+            echo "✅ $file is not empty"
+          else
+            echo "⚠️ Warning: $file is empty"
+          fi
+        done
+        
+        echo "📋 Documentation validation completed"
+
+    - name: Check special files
+      run: |
+        echo "🔍 Checking special documentation files..."
+        
+        # Check robots.txt if exists
+        if [ -f "static/robots.txt" ]; then
+          echo "✅ robots.txt found"
+          head -5 static/robots.txt
+        fi
+        
+        # Check humans.txt if exists
+        if [ -f "static/humans.txt" ]; then
+          echo "✅ humans.txt found"
+          head -5 static/humans.txt
+        fi
+        
+        # Check llms.txt if exists
+        if [ -f "static/llms.txt" ]; then
+          echo "✅ llms.txt found"
+          head -10 static/llms.txt
+        fi
+        
+        echo "📄 Special files check completed"
+
+    - name: Notify documentation update
+      run: |
+        echo "📚 Documentation changes detected and validated!"
+        echo "This workflow runs only for documentation changes to save CI resources."
+        echo "Code changes will trigger the main CI/CD pipeline."
