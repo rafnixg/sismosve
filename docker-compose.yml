@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  sismosve:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sismosve-app
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - FASTAPI_ENV=production
+      - PORT=8000
+      - HOST=0.0.0.0
+    volumes:
+      # Montar datos persistentes
+      - ./sismosve.json:/app/sismosve.json:rw
+      # Montar logs para debugging
+      - ./logs:/app/logs:rw
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    # Límites de recursos
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+    # Labels para organización
+    labels:
+      - "com.sismosve.description=Aplicación de monitoreo de sismos Venezuela"
+      - "com.sismosve.version=2.0"
+      - "traefik.enable=true"
+      - "traefik.http.routers.sismosve.rule=Host(`sismos.local`)"
+      - "traefik.http.services.sismosve.loadbalancer.server.port=8000"
+
+  # Servicio opcional de reverse proxy con Nginx
+  nginx:
+    image: nginx:alpine
+    container_name: sismosve-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - sismosve
+    restart: unless-stopped
+    profiles:
+      - production
+
+# Red personalizada
+networks:
+  default:
+    name: sismosve-network
+    driver: bridge
+
+# Volúmenes para persistencia
+volumes:
+  sismosve_data:
+    driver: local
+  sismosve_logs:
+    driver: local
