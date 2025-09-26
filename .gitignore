@@ -207,10 +207,10 @@ MODULAR_STRUCTURE.md
 README_MARKETING.md
 REFACTORING_SUMMARY.md
 
-# Test files
-test_*.py
+# Test files (exclude pytest temp files but allow our test scripts)
 *_test.py
 tests_*
+test_temp_*.py
 
 # Node.js (if any)
 node_modules/
