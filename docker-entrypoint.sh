@@ -19,7 +19,7 @@ if [ "$(id -u)" = "0" ]; then
     
     # Cambiar a usuario sismosve y ejecutar la aplicación
     echo "👤 Cambiando a usuario sismosve..."
-    exec su-exec sismosve python run.py prod
+    su sismosve -c "python run.py prod"
 else
     echo "👤 Ejecutando como usuario $(whoami)"
     # Si ya somos el usuario correcto, solo crear logs

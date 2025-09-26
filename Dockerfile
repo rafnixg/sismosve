@@ -29,7 +29,6 @@ RUN groupadd -r sismosve && useradd -r -g sismosve sismosve
 # Instalar dependencias mínimas del sistema
 RUN apt-get update && apt-get install -y \
     curl \
-    su-exec \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
