@@ -112,7 +112,9 @@ jobs:
         git config --local user.name "GitHub Action"
         git add .
         git diff --staged --quiet || git commit -m "docs: update version references to ${{ steps.version.outputs.version }}"
-        git push
+        BRANCH=${GITHUB_REF#refs/tags/}
+        git push origin $BRANCH
+        
 
   notify-release:
     runs-on: ubuntu-latest
