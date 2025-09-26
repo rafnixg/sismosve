@@ -258,6 +258,27 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          -70.91,
+          9.79
+        ],
+        "marcador": "marker"
+      },
+      "properties": {
+        "depth": "14.1 km",
+        "value": "3.5",
+        "addressFormatted": "29 km al sureste de Bachaquero",
+        "time": "06:51",
+        "country": "Venezuela",
+        "date": "25-09-2025",
+        "lat": "9.79",
+        "long": "-70.91"
+      }
+    },
+    {
+      "type": "Sismo",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           -70.58,
           9.91
         ],
@@ -398,27 +419,6 @@
         "date": "25-09-2025",
         "lat": "9.89",
         "long": "-70.64"
-      }
-    },
-    {
-      "type": "Sismo",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -70.97,
-          9.8
-        ],
-        "marcador": "marker"
-      },
-      "properties": {
-        "depth": "8.4 km",
-        "value": "3.4",
-        "addressFormatted": "24 km al sureste de Bachaquero",
-        "time": "03:15",
-        "country": "Venezuela",
-        "date": "25-09-2025",
-        "lat": "9.80",
-        "long": "-70.97"
       }
     }
   ]
