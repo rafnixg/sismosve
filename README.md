@@ -1,5 +1,12 @@
 # SismosVE - Monitoreo de Sismos Venezuela (sismosve.rafnixg.dev)
 
+[![CI/CD Pipeline](https://github.com/rafnixg/sismosve/actions/workflows/ci.yml/badge.svg)](https://github.com/rafnixg/sismosve/actions/workflows/ci.yml)
+[![Build and Push Docker Image](https://github.com/rafnixg/sismosve/actions/workflows/docker-build.yml/badge.svg)](https://github.com/rafnixg/sismosve/actions/workflows/docker-build.yml)
+[![Python 3.14](https://img.shields.io/badge/python-3.14-blue.svg)](https://www.python.org/downloads/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com)
+[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?logo=docker&logoColor=white)](https://github.com/rafnixg/sismosve/pkgs/container/sismosve)
+[![GitHub stars](https://img.shields.io/github/stars/rafnixg/sismosve.svg?style=social&label=Star)](https://github.com/rafnixg/sismosve)
+
 ## 🎯 Descripción
 Aplicación web moderna para visualizar y monitorear sismos en Venezuela usando datos oficiales de FUNVISIS con arquitectura modular optimizada.
 
