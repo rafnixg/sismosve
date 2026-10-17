@@ -11,6 +11,7 @@
   let selected = $state<string | null>(null);
   let loading = $state(false);
   let error = $state('');
+  let failedOperation = $state<'read' | 'update'>('read');
   let queried = $state('');
   let updated = $state('');
   let controller: AbortController | undefined;
@@ -21,10 +22,12 @@
     if (loading) return;
     controller = new AbortController(); const signal = controller.signal;
     loading = true; error = '';
+    let operation: 'read' | 'update' = force ? 'update' : 'read';
     try {
       if (force) {
         const result = await request<{ success: boolean }>('/api/update', signal, 'POST');
         if (!result.success) throw new Error('FUNVISIS no pudo actualizar los registros. Inténtalo de nuevo más tarde.');
+        operation = 'read';
       }
       const data = await request<Collection>('/api/sismos', signal);
       const normalized = normalize(data);
@@ -35,7 +38,10 @@
         updated = status.data.last_update ? status.data.last_update.replace('T', ' ').slice(0, 19) : 'Sin actualización confirmada';
       } catch { updated = 'No disponible'; }
     } catch (e) {
-      if (!(e instanceof DOMException && e.name === 'AbortError')) error = e instanceof Error ? e.message : 'No se pudieron cargar los datos.';
+      if (!(e instanceof DOMException && e.name === 'AbortError')) {
+        failedOperation = operation;
+        error = e instanceof Error ? e.message : 'No se pudieron cargar los datos.';
+      }
     } finally { loading = false; }
   }
   function download() {
@@ -55,7 +61,7 @@
   <div class="data-status" role="status" aria-live="polite"><i class="dot" class:loading></i>{loading ? 'Consultando registros…' : queried ? `Consultado a las ${queried}` : 'Preparando registros'}<small>Actualización automática cada 5 minutos</small></div>
   <div class="actions"><button disabled={loading} onclick={() => load()}>Recargar</button><button disabled={loading} onclick={() => load(true)}>Actualizar desde FUNVISIS</button><button class="primary" disabled={!collection || invalid} onclick={download}>Exportar JSON</button></div>
 </div>
-{#if error}<div class="error-banner" role="alert"><p>{error} {collection ? 'Se conservan los últimos datos consultados.' : 'Comprueba tu conexión e inténtalo de nuevo.'}</p><button disabled={loading} onclick={() => load()}>Reintentar</button></div>{/if}
+{#if error}<div class="error-banner" role="alert"><p>{error} {collection ? 'Se conservan los últimos datos consultados.' : 'Comprueba tu conexión e inténtalo de nuevo.'}</p><button disabled={loading} onclick={() => load(failedOperation === 'update')}>Reintentar</button></div>{/if}
 <FiltersView {filters} {invalid}/>
 <Summary events={visible} total={collection ? events.length : null}
   filtered={Boolean(filters.magnitude || filters.start || filters.end)}

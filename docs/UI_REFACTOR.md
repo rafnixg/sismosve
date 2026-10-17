@@ -110,3 +110,31 @@ de revisión conservando su hash al arrancar; después de una escritura real se
 recreó el contenedor y se verificó que JSON y respaldos conservaran sus hashes.
 Una actualización manual real desde FUNVISIS también guardó los datos y su
 respaldo en el volumen. La instancia queda saludable en localhost:8001.
+
+## Observaciones de Copilot
+
+- [Permisos del archivo en Linux](https://github.com/rafnixg/sismosve/pull/21#discussion_r4304711173):
+  el bind mount del archivo fue reemplazado en `d4ea457` por un volumen de datos.
+  La imagen usa UID/GID `10001:10001`. Además de la migración de revisión, se
+  verificó un volumen nuevo en Docker Linux: el usuario de runtime inicializa,
+  escribe y genera el respaldo sin privilegios. Los volúmenes existentes siguen
+  el ajuste de permisos documentado en la guía de migración.
+- [Reintentar la operación fallida](https://github.com/rafnixg/sismosve/pull/21#discussion_r4304711199):
+  se conserva la etapa que falló (actualización o lectura). Un fallo del POST
+  repite la actualización; un fallo de lectura repite el GET. Si el POST ya tuvo
+  éxito y falla el GET posterior, el reintento no duplica la actualización.
+- [Desplazamiento al seleccionar un marcador](https://github.com/rafnixg/sismosve/pull/21#discussion_r4304711221):
+  se desplaza únicamente `.event-list` hasta la fila seleccionada. Se comprobó
+  que `window.scrollY` permanece igual y el popup del mapa sigue visible a 375,
+  768 y 1440 px, tanto al buscar una fila inferior como una superior.
+
+Las regresiones de reintento y desplazamiento se pueden repetir con Playwright
+CLI, después de arrancar la instancia local y abrir el navegador:
+
+```sh
+npx --yes --package @playwright/cli playwright-cli open http://localhost:8001 --browser msedge
+npx --yes --package @playwright/cli playwright-cli run-code --filename frontend/checks/review-regressions.js
+```
+
+Los fallos HTTP se simulan en el navegador y se contabilizan los GET/POST para
+verificar la operación repetida. Las rutas simuladas se retiran al terminar.
