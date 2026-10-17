@@ -1,0 +1,11 @@
+[
+  {
+    "date": "2026-10-17",
+    "scope": "app",
+    "macrostructure": "Workbench",
+    "theme": "custom",
+    "theme_axes": "light blue-grey / sans / blue",
+    "enrichment": "none",
+    "brief": "SismosVE cartographic monitor with FUNVISIS survey CTA"
+  }
+]

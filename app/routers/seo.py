@@ -6,7 +6,7 @@ import logging
 from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import Response
 
-from ..config import STATIC_DIR
+from ..config import STATIC_DIR, PUBLIC_URL
 
 logger = logging.getLogger(__name__)
 router = APIRouter(include_in_schema=False)
@@ -18,7 +18,7 @@ async def robots_txt():
     try:
         robots_path = STATIC_DIR / "robots.txt"
         if robots_path.exists():
-            content = robots_path.read_text(encoding='utf-8')
+            content = robots_path.read_text(encoding='utf-8').replace('__PUBLIC_URL__', PUBLIC_URL)
             return Response(content=content, media_type="text/plain")
         else:
             return Response(
@@ -41,7 +41,7 @@ async def sitemap_xml(request: Request):
         if sitemap_path.exists():
             content = sitemap_path.read_text(encoding='utf-8')
             # Reemplazar placeholder con URL real
-            content = content.replace("https://sismo.rafnixg.dev", str(request.base_url).rstrip('/'))
+            content = content.replace("__PUBLIC_URL__", PUBLIC_URL)
             return Response(content=content, media_type="application/xml")
         else:
             # Sitemap básico si no existe el archivo

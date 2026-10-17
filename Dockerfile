@@ -1,6 +1,14 @@
+FROM node:22-bookworm-slim AS frontend
+WORKDIR /ui
+COPY frontend/package*.json ./frontend/
+RUN cd frontend && npm ci
+COPY frontend/ ./frontend/
+COPY tokens.css ./tokens.css
+RUN cd frontend && npm run check && npm run test && npm run build
+
 # Multi-stage Dockerfile para SismosVE
 # Etapa 1: Builder - Instalar dependencias
-FROM python:3.14-slim as builder
+FROM python:3.14-slim AS builder
 
 # Instalar dependencias del sistema para compilación
 RUN apt-get update && apt-get install -y \
@@ -40,10 +48,11 @@ COPY --from=builder /root/.local /home/sismosve/.local
 
 # Copiar código de la aplicación
 COPY --chown=sismosve:sismosve . .
+COPY --from=frontend --chown=sismosve:sismosve /ui/static/ui /app/static/ui
 
 # Copiar y hacer ejecutable el script de entrypoint
 COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+RUN sed -i 's/\r$//' /usr/local/bin/docker-entrypoint.sh && chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Variables de entorno
 ENV PYTHONPATH=/app

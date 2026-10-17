@@ -51,6 +51,7 @@ def setup_logging():
 
 # Configurar rutas
 BASE_DIR = Path(__file__).parent.parent
+PUBLIC_URL = os.getenv("PUBLIC_URL", "https://sismosve.rafnixg.dev").rstrip("/")
 STATIC_DIR = BASE_DIR / "static"
 TEMPLATES_DIR = BASE_DIR / "templates"
 DATA_DIR = BASE_DIR

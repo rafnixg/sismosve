@@ -1,0 +1,33 @@
+/* Hallmark · genre: modern-minimal · macrostructure: Workbench · design-system: design.md · designed-as-app */
+:root {
+  --color-paper: #ffffff;
+  --color-paper-2: #edf2f6;
+  --color-ink: #182f43;
+  --color-ink-2: #526577;
+  --color-rule: #d4dfe7;
+  --color-accent: #145ca0;
+  --color-accent-ink: #ffffff;
+  --color-focus: #853ac2;
+  --color-low: #247445;
+  --color-medium: #a55b06;
+  --color-high: #be3434;
+  --color-error-bg: #fff0ee;
+  --color-selected: #e6f0fb;
+  --font-body: 'Source Sans 3', 'Segoe UI', sans-serif;
+  --space-xs: .25rem;
+  --space-sm: .5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --text-xs: .8rem;
+  --text-sm: .9rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 2rem;
+  --text-display: clamp(1.7rem, 3vw, 2.5rem);
+  --radius-input: 6px;
+  --radius-panel: 10px;
+  --rule-width: 1px;
+  --dur-short: 140ms;
+  --ease-out: ease-out;
+}

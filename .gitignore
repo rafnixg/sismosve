@@ -191,7 +191,7 @@ temp/
 tmp/
 
 # Docker
-.dockerignore
+!.dockerignore
 
 # SSL Certificates (if any)
 ssl/
@@ -265,6 +265,12 @@ uploads/
 # Lock files (keep requirements.txt instead)
 yarn.lock
 package-lock.json
+!frontend/package-lock.json
+static/ui/
+output/
+.local/
+frontend/.svelte-kit/
+.playwright-cli/
 
 # Editor directories and files
 .history

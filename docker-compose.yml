@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: sismosve-app
     ports:
-      - "8000:8000"
+      - "${SISMOSVE_PORT:-8000}:8000"
     environment:
       - PYTHONUNBUFFERED=1
       - FASTAPI_ENV=production
