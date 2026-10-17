@@ -3,6 +3,7 @@
   import MapView from './Map.svelte';
   import FiltersView from './Filters.svelte';
   import EventList from './EventList.svelte';
+  import Summary from './Summary.svelte';
   import { normalize, filterEvents, request, type Collection, type Earthquake, type Filters } from './data';
   let events = $state<Earthquake[]>([]);
   let collection = $state<Collection | null>(null);
@@ -15,7 +16,6 @@
   let controller: AbortController | undefined;
   const invalid = $derived(Boolean(filters.start && filters.end && filters.start > filters.end));
   const visible = $derived(invalid ? [] : filterEvents(events, filters));
-  const maximum = $derived(visible.reduce((max, e) => Number.isFinite(e.magnitude) ? Math.max(max, e.magnitude) : max, -Infinity));
   $effect(() => { if (selected && !visible.some(e => e.id === selected)) selected = null; });
   async function load(force = false) {
     if (loading) return;
@@ -57,10 +57,8 @@
 </div>
 {#if error}<div class="error-banner" role="alert"><p>{error} {collection ? 'Se conservan los últimos datos consultados.' : 'Comprueba tu conexión e inténtalo de nuevo.'}</p><button disabled={loading} onclick={() => load()}>Reintentar</button></div>{/if}
 <FiltersView {filters} {invalid}/>
-<div class="summary" aria-label="Resumen de resultados">
-  <div><strong>{visible.length}</strong><span>Sismos encontrados</span></div>
-  <div><strong>{maximum > -Infinity ? maximum.toFixed(1) : '—'}</strong><span>Mayor magnitud</span></div>
-  <div class="last-event"><strong>{visible[0]?.feature.properties.date ?? '—'}</strong><span>Último sismo en los resultados</span></div>
-</div>
+<Summary events={visible} total={collection ? events.length : null}
+  filtered={Boolean(filters.magnitude || filters.start || filters.end)}
+  {loading} {invalid} failed={Boolean(error)}/>
 <div class="workspace" aria-busy={loading}><MapView events={visible} {selected} onselect={id => selected = id}/><EventList events={visible} {selected} onselect={id => selected = id}/></div>
 <p class="source-note">Datos de FUNVISIS · Fechas y horas según la fuente. Última actualización del servicio: {updated || 'Consultando…'}. Los colores indican magnitud, no intensidad percibida.</p>

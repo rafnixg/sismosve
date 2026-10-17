@@ -66,3 +66,26 @@ las seis pruebas existentes de API/SEO también pasan.
 
 ![Privacidad en escritorio](ui-review/privacy-desktop.png)
 ![Términos en móvil](ui-review/terms-mobile.png)
+
+
+## Resumen de resultados
+
+El resumen agrupa cantidad, mayor magnitud y último evento en una franja con
+separadores. Las etiquetas preceden a los valores; la magnitud usa el mismo
+código de color del mapa. El último sismo incluye fecha legible, hora de la
+fuente y ubicación. En móvil ocupa una fila completa bajo los dos números.
+Al filtrar se indica cuántos registros se muestran respecto del total consultado.
+
+Los estados de carga inicial, error sin datos y fechas inválidas muestran un
+guion en vez de un cero ficticio. Una búsqueda vacía muestra cero registros y
+ninguna magnitud o fecha. Si falla la recarga, se conservan los últimos valores.
+Los cambios de cantidad se anuncian de forma accesible sin mover el foco.
+
+Validación: Svelte check, build y pruebas existentes correctos; Playwright
+verifica los valores con datos controlados, fecha/hora sin conversión de zona,
+filtros combinados, ausencia de resultados, rango inválido, carga inicial y
+fallos con/sin datos previos. Revisado en 320, 375, 414, 768, 1280 y 1440 px sin
+desbordamiento. Docker reconstruido y dejado en ejecución.
+
+![Resumen en escritorio](ui-review/summary-desktop.png)
+![Resumen en móvil](ui-review/summary-mobile.png)

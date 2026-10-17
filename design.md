@@ -12,6 +12,12 @@ lateral y columna de lectura de hasta 72 caracteres. En móvil el índice se
 pliega con un control nativo. Mantienen el mismo tema y tipografía del monitor,
 sin cargar JavaScript. La impresión oculta la navegación.
 
+El resumen de resultados es una franja única con separadores y etiquetas sobre
+los valores. Cantidad y magnitud comparten escala; el último evento muestra
+fecha legible, hora de la fuente y ubicación. En móvil los dos números comparten
+una fila y el último evento ocupa la siguiente. Los datos se derivan de los
+resultados filtrados; antes de cargarlos se muestra un guion, nunca un cero ficticio.
+
 ## Tokens y tipografía
 `tokens.css` es la fuente de colores, espacios, tamaños y radios del frontend.
 Source Sans 3 local, pesos 400, 600 y 700; números tabulares para magnitudes.
