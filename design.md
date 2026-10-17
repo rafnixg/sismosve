@@ -6,6 +6,12 @@ Género modern-minimal; estructura Workbench: encabezado compacto, reporte a
 FUNVISIS, filtros, resumen y mapa con lista lateral. Sin decoración animada.
 En móvil el mapa precede a la lista. Las páginas legales conservan su contenido.
 
+Las páginas de privacidad y términos usan la familia Long Document: cabecera
+compartida, pestañas entre documentos, fecha original de actualización, índice
+lateral y columna de lectura de hasta 72 caracteres. En móvil el índice se
+pliega con un control nativo. Mantienen el mismo tema y tipografía del monitor,
+sin cargar JavaScript. La impresión oculta la navegación.
+
 ## Tokens y tipografía
 `tokens.css` es la fuente de colores, espacios, tamaños y radios del frontend.
 Source Sans 3 local, pesos 400, 600 y 700; números tabulares para magnitudes.

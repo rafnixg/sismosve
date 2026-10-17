@@ -44,3 +44,25 @@ de datos independiente. Consultar logs y detenerlo con:
 docker compose -f docker-compose.local.yml logs -f
 docker compose -f docker-compose.local.yml stop
 ```
+
+
+## Páginas legales
+
+Privacidad y términos comparten la tipografía local, los colores y los controles
+del monitor. Incluyen navegación entre documentos, índice lateral en escritorio,
+índice desplegable nativo en móvil, enlaces a cada sección, acceso al mapa y
+estilos de impresión. Sus URLs, descripciones SEO, contenido legal y fecha
+original de actualización se conservan. No cargan JavaScript.
+
+Vite genera `static/ui/legal.css` con los tokens y fuentes locales. El archivo
+se referencia directamente desde ambos documentos estáticos, sin cargar el
+bundle del mapa. Sus dependencias tipográficas conservan nombres versionados.
+
+Validación adicional: comparación del contenido de ambos documentos con la
+versión anterior; Playwright en 320, 375, 414, 768, 1280 y 1440 px sin overflow;
+índices, navegación entre documentos, enlaces al mapa, foco de teclado, modo
+impresión y contenido disponible sin JavaScript. Svelte check, build Docker y
+las seis pruebas existentes de API/SEO también pasan.
+
+![Privacidad en escritorio](ui-review/privacy-desktop.png)
+![Términos en móvil](ui-review/terms-mobile.png)

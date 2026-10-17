@@ -8,7 +8,14 @@ export default defineConfig({
     outDir: '../static/ui',
     emptyOutDir: true,
     manifest: true,
-    rollupOptions: { input: 'src/main.ts' },
+    rollupOptions: {
+      input: { main: 'src/main.ts', legal: 'src/legal.css' },
+      output: {
+        // Static legal pages can load their styles without a JavaScript runtime.
+        assetFileNames: asset => asset.names.includes('legal.css')
+          ? 'legal.css' : 'assets/[name]-[hash][extname]',
+      },
+    },
   },
   server: { fs: { allow: ['..'] } },
 });

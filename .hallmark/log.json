@@ -2,6 +2,15 @@
   {
     "date": "2026-10-17",
     "scope": "app",
+    "macrostructure": "Long Document",
+    "theme": "custom",
+    "theme_axes": "light blue-grey / sans / blue",
+    "enrichment": "none",
+    "brief": "Privacy and terms share monitor typography, navigation and accessible contents"
+  },
+  {
+    "date": "2026-10-17",
+    "scope": "app",
     "macrostructure": "Workbench",
     "theme": "custom",
     "theme_axes": "light blue-grey / sans / blue",

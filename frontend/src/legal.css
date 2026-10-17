@@ -1,0 +1,105 @@
+@import '@fontsource/source-sans-3/latin-400.css';
+@import '@fontsource/source-sans-3/latin-600.css';
+@import '@fontsource/source-sans-3/latin-700.css';
+@import '../../tokens.css';
+
+/* Hallmark · genre: modern-minimal · macrostructure: Long Document · design-system: design.md · designed-as-app */
+* { box-sizing: border-box; }
+html, body { margin: 0; overflow-x: clip; }
+html { scroll-padding-top: var(--space-xl); }
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: 1.65;
+  color: var(--color-ink);
+  background: var(--color-paper-2);
+}
+a { color: var(--color-accent); text-underline-offset: .2em; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 4px; }
+h1, h2 { font-style: normal; overflow-wrap: anywhere; }
+.legal-shell { max-width: 1200px; margin-inline: auto; padding: 0 var(--space-xl); }
+.legal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  padding-block: var(--space-lg);
+  border-bottom: var(--rule-width) solid var(--color-rule);
+}
+.brand { font-size: var(--text-lg); font-weight: 700; text-decoration: none; }
+.legal-tabs { display: flex; align-items: center; gap: var(--space-xs); }
+.legal-tabs a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-input);
+  color: var(--color-ink-2);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.legal-tabs a:hover { background: var(--color-paper); color: var(--color-accent); }
+.legal-tabs a[aria-current='page'] { background: var(--color-selected); color: var(--color-accent); font-weight: 600; }
+.back-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: var(--space-lg); font-size: var(--text-sm); }
+.legal-intro { padding-block: var(--space-lg) var(--space-xl); max-width: 74ch; }
+.legal-intro h1 { font-size: var(--text-display); line-height: 1.15; margin: 0 0 var(--space-md); }
+.legal-intro p { margin: 0; color: var(--color-ink-2); }
+.legal-intro .updated { margin-top: var(--space-md); font-size: var(--text-sm); }
+.legal-layout { display: grid; grid-template-columns: 230px minmax(0, 1fr); align-items: start; gap: var(--space-xl); }
+.legal-index { position: sticky; top: var(--space-xl); padding-bottom: var(--space-lg); }
+.legal-index h2 { margin: 0 0 var(--space-sm); font-size: var(--text-md); }
+.contents-list { padding: 0; margin: 0; list-style: none; }
+.contents-list a { display: block; padding-block: var(--space-sm); color: var(--color-ink-2); text-decoration: none; font-size: var(--text-sm); }
+.contents-list a:hover { color: var(--color-accent); text-decoration: underline; }
+.mobile-contents { display: none; }
+.legal-article { min-width: 0; background: var(--color-paper); border: var(--rule-width) solid var(--color-rule); border-radius: var(--radius-panel); padding: var(--space-xl); }
+.legal-section { scroll-margin-top: var(--space-xl); }
+.legal-section + .legal-section { margin-top: var(--space-xl); padding-top: var(--space-lg); border-top: var(--rule-width) solid var(--color-rule); }
+.legal-section h2 { margin: 0 0 var(--space-md); font-size: var(--text-lg); line-height: 1.35; }
+.legal-article p { margin: 0 0 var(--space-md); }
+.legal-article ul { padding-left: var(--space-lg); margin: 0 0 var(--space-md); }
+.legal-article li + li { margin-top: var(--space-sm); }
+.legal-article p, .legal-article li { max-width: 72ch; overflow-wrap: anywhere; }
+.legal-section > :last-child { margin-bottom: 0; }
+.legal-summary { border-top: var(--rule-width) solid var(--color-rule); padding-top: var(--space-lg); margin-top: var(--space-xl); }
+.legal-article > .legal-summary { margin-bottom: 0; }
+.warning { background: var(--color-paper-2); border: var(--rule-width) solid var(--color-rule); border-radius: var(--radius-input); padding: var(--space-lg); margin-bottom: var(--space-xl); }
+.warning strong { display: block; margin-bottom: var(--space-xs); }
+.legal-section .warning { margin-top: var(--space-lg); margin-bottom: 0; }
+.legal-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-md); margin-top: var(--space-xl); padding-block: var(--space-lg); color: var(--color-ink-2); font-size: var(--text-sm); border-top: var(--rule-width) solid var(--color-rule); }
+.legal-footer p { margin: 0; }
+.legal-footer nav { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-lg); }
+.legal-footer a { white-space: nowrap; }
+.skip-link { position: absolute; top: -100px; }
+.skip-link:focus { top: 0; z-index: 1; background: var(--color-paper); padding: var(--space-md); }
+@media (max-width: 900px) {
+  .legal-shell { padding-inline: var(--space-lg); }
+  .legal-layout { grid-template-columns: minmax(0, 1fr); gap: var(--space-lg); }
+  .legal-index { display: none; }
+  .mobile-contents { display: block; border-block: var(--rule-width) solid var(--color-rule); }
+  .mobile-contents summary { padding-block: var(--space-md); cursor: pointer; color: var(--color-accent); font-weight: 600; }
+  .mobile-contents nav { padding-bottom: var(--space-md); }
+  .legal-article { padding: var(--space-lg); }
+}
+@media (max-width: 450px) {
+  .legal-shell { padding-inline: var(--space-md); }
+  .legal-header { align-items: flex-start; flex-direction: column; gap: var(--space-sm); }
+  .legal-tabs a { padding-inline: var(--space-sm); }
+  .legal-intro { padding-top: var(--space-md); }
+  .legal-article { padding: var(--space-md); }
+  .legal-footer { align-items: flex-start; flex-direction: column; }
+}
+@media print {
+  body { background: var(--color-paper); }
+  .legal-header, .back-link, .legal-index, .mobile-contents, .legal-footer, .skip-link { display: none; }
+  .legal-shell { max-width: none; padding: 0; }
+  .legal-layout { display: block; }
+  .legal-article { border: 0; padding: 0; }
+  .legal-section h2 { break-after: avoid; }
+  a { color: inherit; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+}
