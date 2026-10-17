@@ -8,6 +8,7 @@ from pathlib import Path
 from contextlib import asynccontextmanager
 
 from .services import SismosService, UpdaterService
+from .storage import get_data_file, initialize_data_file
 
 
 def setup_logging():
@@ -51,9 +52,10 @@ def setup_logging():
 
 # Configurar rutas
 BASE_DIR = Path(__file__).parent.parent
+PUBLIC_URL = os.getenv("PUBLIC_URL", "https://sismosve.rafnixg.dev").rstrip("/")
 STATIC_DIR = BASE_DIR / "static"
 TEMPLATES_DIR = BASE_DIR / "templates"
-DATA_DIR = BASE_DIR
+DATA_DIR = get_data_file().parent
 
 # Servicios globales
 sismos_service = SismosService()
@@ -70,6 +72,7 @@ async def lifespan(_app):
     # Startup
     logger.info("Iniciando aplicación SismosVE...")
     try:
+        initialize_data_file(Path(sismos_service.data_file))
         await updater_service.start_scheduler()
         logger.info("Aplicación iniciada correctamente")
     except Exception as e:

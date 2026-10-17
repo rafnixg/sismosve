@@ -26,7 +26,7 @@ Aplicación web moderna para visualizar y monitorear sismos en Venezuela usando 
 
 ## 🛠️ Tecnologías
 - **Backend**: FastAPI + Python 3.13+ con arquitectura modular
-- **Frontend**: JavaScript ES6 modular + Leaflet.js
+- **Frontend**: Svelte 5 + TypeScript + Vite + Leaflet.js
 - **Containerización**: Docker + Docker Compose
 - **CI/CD**: GitHub Actions con automated testing
 - **Registry**: GitHub Container Registry (ghcr.io)
@@ -311,3 +311,72 @@ Para soporte técnico o reportar bugs:
 - **📖 API Docs**: https://sismosve.rafnixg.dev/docs
 - **🐳 Container**: https://github.com/rafnixg/sismosve/pkgs/container/sismosve
 - **⚡ Actions**: https://github.com/rafnixg/sismosve/actions
+
+
+## UI Svelte: desarrollo y revisión local
+
+Requisitos: Node 22.12+ y Python compatible con las dependencias instaladas.
+El documento HTML, SEO y CTA de FUNVISIS se sirven desde FastAPI; Svelte
+controla mapa, filtros y listado. El frontend conserva las rutas de la API.
+
+```powershell
+cd frontend
+npm ci
+npm run check
+npm test
+npm run build
+cd ..
+pip install -r requirements.txt pytest httpx
+$env:TESTING = "true"
+python -m pytest test_app.py test_ui.py test_storage.py -q
+Remove-Item Env:TESTING
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8001
+```
+
+Para HMR, ejecutar `npm run dev` en `frontend` y arrancar FastAPI con
+`VITE_DEV_URL=http://127.0.0.1:5173/static/ui`.
+Para producción, no definir `VITE_DEV_URL`. `PUBLIC_URL` determina el canonical,
+las tarjetas sociales y el sitemap; por defecto es https://sismosve.rafnixg.dev.
+Las fechas y horas de los registros se muestran según la fuente.
+
+### Contenedor de revisión aislado
+
+En PowerShell, desde la raíz:
+
+```powershell
+docker compose -f docker-compose.local.yml up -d --build
+```
+
+Acceso: http://localhost:8001. Nombre: `sismosve-svelte-review`.
+Los datos se guardan en el volumen de revisión `sismosve-review-data`, en
+`/app/data/sismosve.json`. El JSON existente se conserva al iniciar. Si falta,
+se inicializa una vez con la muestra del repositorio; la próxima consulta a
+FUNVISIS ocurre a los cinco minutos o al pulsar el botón de actualización.
+Si la fuente falla, se conservan los registros existentes.
+
+```powershell
+docker compose -f docker-compose.local.yml logs -f
+docker compose -f docker-compose.local.yml stop
+```
+
+El Compose principal mantiene el puerto 8000 por defecto; se puede modificar
+con `SISMOSVE_PORT`. La imagen compila el frontend durante el build y no requiere
+Node en runtime. Los recursos compilados no se versionan; el lockfile sí.
+
+### Persistencia del JSON y Dokploy
+
+API y actualizadores comparten `DATA_FILE`. En Docker su valor es
+`/app/data/sismosve.json`; los respaldos se guardan en el mismo volumen.
+El usuario del contenedor usa UID/GID `10001:10001`. El volumen existente de
+Dokploy debe montarse en `/app/data` y permitir escritura a ese usuario.
+La [guía de migración](docs/PERSISTENT_DATA.md) incluye los comandos para copiar
+el JSON anterior, preservar el archivo existente y verificar permisos.
+
+### Comportamiento de la nueva interfaz
+
+- Filtros combinados de magnitud mínima y fechas inclusivas, sin filtro inicial.
+- Mapa, lista y estadísticas reflejan el mismo conjunto filtrado.
+- Exportación JSON de los resultados visibles, conservando el contrato de datos.
+- Consulta automática cada cinco minutos y actualización manual desde FUNVISIS.
+- CTA permanente «¿Sentiste un sismo?» hacia la encuesta oficial en otra pestaña.
+- SEO disponible sin JavaScript: metadatos, H1, descripción y enlaces principales.

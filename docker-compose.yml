@@ -7,15 +7,16 @@ services:
       dockerfile: Dockerfile
     container_name: sismosve-app
     ports:
-      - "8000:8000"
+      - "${SISMOSVE_PORT:-8000}:8000"
     environment:
       - PYTHONUNBUFFERED=1
       - FASTAPI_ENV=production
       - PORT=8000
       - HOST=0.0.0.0
+      - DATA_FILE=/app/data/sismosve.json
     volumes:
       # Montar datos persistentes
-      - ./sismosve.json:/app/sismosve.json:rw
+      - sismosve_data:/app/data
       # Montar logs para debugging
       - ./logs:/app/logs:rw
     restart: unless-stopped
@@ -67,6 +68,7 @@ networks:
 # Volúmenes para persistencia
 volumes:
   sismosve_data:
+    name: ${SISMOSVE_DATA_VOLUME:-sismove-data}
     driver: local
   sismosve_logs:
     driver: local

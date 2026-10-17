@@ -52,7 +52,7 @@ docker build -t sismosve:latest .
 docker run -d \
   --name sismosve-dev \
   -p 8000:8000 \
-  -v ./sismosve.json:/app/sismosve.json \
+  -v sismove-data:/app/data \
   -v ./logs:/app/logs \
   sismosve:latest
 ```
@@ -67,13 +67,13 @@ docker-compose up -d
 ### Características del Dockerfile:
 - **Multi-stage build** para optimizar tamaño
 - **Usuario no-root** para seguridad
-- **Python 3.11 slim** como base
+- **Python 3.14 slim** como base
 - **Health check** integrado
 - **Variables de entorno** configurables
 
 ### Puertos y Volúmenes:
 - **Puerto**: `8000` (FastAPI)
-- **Datos**: `./sismosve.json` montado como volumen
+- **Datos**: volumen `sismove-data` montado en `/app/data`
 - **Logs**: `./logs` para persistencia
 - **Configuración**: Variables de entorno
 
@@ -117,7 +117,7 @@ docker-compose --profile production up -d
 ├── app/                    # Código FastAPI
 ├── static/                 # Archivos estáticos
 ├── templates/              # Templates HTML
-├── sismosve.json          # Base de datos (montada)
+├── data/                  # Volumen persistente: JSON y respaldos
 ├── logs/                  # Logs (montado)
 ├── run.py                 # Script de ejecución
 └── requirements.txt       # Dependencias
@@ -249,13 +249,13 @@ docker run -p 8001:8000 sismosve:latest
 
 #### 2. Permisos de Archivos:
 ```bash
-# Verificar ownership
-ls -la sismosve.json logs/
-
-# Corregir permisos
-chmod 666 sismosve.json
-chmod -R 777 logs/
+# Verificar el usuario y la ruta persistente dentro del contenedor
+docker exec sismosve-app sh -c 'id; ls -ld /app/data; ls -l /app/data/sismosve.json'
 ```
+
+Para un volumen existente, seguir el ajuste de permisos de
+[la guía de migración](docs/PERSISTENT_DATA.md). El usuario de runtime es
+`10001:10001`; no es necesario dar escritura a todos los usuarios.
 
 #### 3. Build Failures:
 ```bash
@@ -295,3 +295,12 @@ docker run -it sismosve:latest /bin/bash
 ---
 
 **🎯 Ready to Deploy!** Tu aplicación SismosVE está lista para contenedores con Docker completo y optimizado.
+
+## JSON persistente y migración en Dokploy
+
+La ruta de runtime es `/app/data/sismosve.json`, configurada por `DATA_FILE`.
+Servicio y actualizadores comparten esa ruta. El usuario `sismosve` tiene
+UID/GID `10001:10001`; un volumen existente debe permitirle escritura.
+El arranque conserva el JSON válido existente y no dispara una descarga que
+lo reemplace. Ver [la guía de migración](docs/PERSISTENT_DATA.md) para reutilizar
+el volumen ya creado en Dokploy, cargar el respaldo y comprobar los permisos.

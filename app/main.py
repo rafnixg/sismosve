@@ -2,13 +2,16 @@
 Aplicación principal FastAPI para sismos de Venezuela - Modular
 """
 
+import json
+import os
+from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 # from jinja2 import UndefinedError
 
-from .config import lifespan
+from .config import lifespan, PUBLIC_URL
 from .routers import sismos, admin, seo
 # from .exceptions import not_found_handler, jinja_undefined_handler, internal_error_handler
 
@@ -28,8 +31,15 @@ templates = Jinja2Templates(directory="templates")
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
 async def home(request: Request):
     """Página principal de la aplicación"""
-    context = {"request": request}
-    response = templates.TemplateResponse("index.html", context)
+    manifest_path = Path('static/ui/.vite/manifest.json')
+    entry = {}
+    if manifest_path.exists():
+        manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+        entry = manifest.get('src/main.ts', {})
+    dev_url = os.getenv('VITE_DEV_URL', '').rstrip('/')
+    context = {"request": request, "public_url": PUBLIC_URL,
+               "ui_entry": entry, "vite_dev_url": dev_url}
+    response = templates.TemplateResponse(request=request, name="index.html", context=context)
 
     # Headers para evitar caché del HTML principal (siempre obtener la versión más reciente)
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"

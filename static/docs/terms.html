@@ -3,34 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Términos de Uso - SismosVE</title>
+    <title>Términos de uso - SismosVE</title>
     <meta name="description" content="Términos y condiciones de uso de SismosVE. Lee las condiciones para usar nuestra plataforma de monitoreo sísmico.">
-    <link rel="stylesheet" href="../styles.css">
-    <style>
-        .legal-content { max-width: 800px; margin: 0 auto; padding: 2rem; line-height: 1.6; }
-        .legal-content h1 { color: #1976d2; margin-bottom: 1rem; }
-        .legal-content h2 { color: #333; margin-top: 2rem; margin-bottom: 1rem; }
-        .legal-content p { margin-bottom: 1rem; }
-        .back-link { display: inline-block; margin-bottom: 2rem; color: #1976d2; text-decoration: none; }
-        .back-link:hover { text-decoration: underline; }
-        .warning { background: #fff3cd; border: 1px solid #ffeaa7; padding: 1rem; border-radius: 4px; margin: 1rem 0; }
-    </style>
+    <link rel="icon" href="/static/images/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/static/ui/legal.css">
 </head>
 <body>
-    <div class="legal-content">
-        <a href="/" class="back-link">← Volver a SismosVE</a>
-        
-        <h1>Términos de Uso</h1>
-        <p><em>Última actualización: 25 de septiembre de 2025</em></p>
-
-        <div class="warning">
-            <strong>⚠️ Aviso Importante:</strong> SismosVE es una herramienta informativa. NO sustituye alertas oficiales de emergencia. En caso de sismo, sigue los protocolos oficiales de tu país.
+    <a class="skip-link" href="#contenido">Ir al contenido</a>
+    <div class="legal-shell">
+        <header class="legal-header">
+            <a class="brand" href="/">SismosVE</a>
+            <nav class="legal-tabs" aria-label="Documentos legales">
+                <a href="/static/docs/privacy.html">Privacidad</a>
+                <a href="/static/docs/terms.html" aria-current="page">Términos de uso</a>
+            </nav>
+        </header>
+        <main id="contenido">
+            <a class="back-link" href="/">Volver al mapa de sismos</a>
+            <div class="legal-intro">
+                <h1>Términos de uso</h1>
+                <p>Condiciones para consultar y utilizar los datos de SismosVE.</p>
+                <p class="updated">Última actualización: <time datetime="2025-09-25">25 de septiembre de 2025</time></p>
+            </div>
+            <div class="legal-layout">
+                <aside class="legal-index">
+                    <nav aria-labelledby="indice-titulo">
+                        <h2 id="indice-titulo">En esta página</h2>
+                        <ol class="contents-list">
+<li><a href="#seccion-1">Aceptación de Términos</a></li>
+<li><a href="#seccion-2">Descripción del Servicio</a></li>
+<li><a href="#seccion-3">Fuente de Datos</a></li>
+<li><a href="#seccion-4">Limitaciones y Descargos</a></li>
+<li><a href="#seccion-5">Uso Apropiado</a></li>
+<li><a href="#seccion-6">API y Límites Técnicos</a></li>
+<li><a href="#seccion-7">Responsabilidad</a></li>
+<li><a href="#seccion-8">Propiedad Intelectual</a></li>
+<li><a href="#seccion-9">Modificaciones</a></li>
+<li><a href="#seccion-10">Contacto y Soporte</a></li>
+<li><a href="#seccion-11">Ley Aplicable</a></li>
+</ol>
+                    </nav>
+                </aside>
+                <details class="mobile-contents">
+                    <summary>En esta página</summary>
+                    <nav aria-label="Secciones del documento"><ol class="contents-list">
+<li><a href="#seccion-1">Aceptación de Términos</a></li>
+<li><a href="#seccion-2">Descripción del Servicio</a></li>
+<li><a href="#seccion-3">Fuente de Datos</a></li>
+<li><a href="#seccion-4">Limitaciones y Descargos</a></li>
+<li><a href="#seccion-5">Uso Apropiado</a></li>
+<li><a href="#seccion-6">API y Límites Técnicos</a></li>
+<li><a href="#seccion-7">Responsabilidad</a></li>
+<li><a href="#seccion-8">Propiedad Intelectual</a></li>
+<li><a href="#seccion-9">Modificaciones</a></li>
+<li><a href="#seccion-10">Contacto y Soporte</a></li>
+<li><a href="#seccion-11">Ley Aplicable</a></li>
+</ol></nav>
+                </details>
+                <article class="legal-article" aria-label="Términos de uso">
+                    <div class="warning">
+            <strong>Aviso importante:</strong> SismosVE es una herramienta informativa. NO sustituye alertas oficiales de emergencia. En caso de sismo, sigue los protocolos oficiales de tu país.
         </div>
-
-        <h2>1. Aceptación de Términos</h2>
+<section class="legal-section" id="seccion-1" aria-labelledby="titulo-1">
+<h2 id="titulo-1">1. Aceptación de Términos</h2>
         <p>Al acceder y usar SismosVE, aceptas estos términos de uso. Si no estás de acuerdo, no uses la plataforma.</p>
-
-        <h2>2. Descripción del Servicio</h2>
+</section>
+<section class="legal-section" id="seccion-2" aria-labelledby="titulo-2">
+<h2 id="titulo-2">2. Descripción del Servicio</h2>
         <p>SismosVE es una plataforma web gratuita que proporciona:</p>
         <ul>
             <li>Visualización de datos sísmicos en tiempo real</li>
@@ -38,11 +77,13 @@
             <li>Estadísticas y exportación de datos</li>
             <li>API REST para acceso programático</li>
         </ul>
-
-        <h2>3. Fuente de Datos</h2>
+</section>
+<section class="legal-section" id="seccion-3" aria-labelledby="titulo-3">
+<h2 id="titulo-3">3. Fuente de Datos</h2>
         <p>Los datos sísmicos provienen de FUNVISIS (Fundación Venezolana de Investigaciones Sismológicas). SismosVE actúa como intermediario tecnológico y NO es responsable de la precisión, completitud o puntualidad de los datos originales.</p>
-
-        <h2>4. Limitaciones y Descargos</h2>
+</section>
+<section class="legal-section" id="seccion-4" aria-labelledby="titulo-4">
+<h2 id="titulo-4">4. Limitaciones y Descargos</h2>
         <p><strong>IMPORTANTE:</strong></p>
         <ul>
             <li>Los datos pueden tener retrasos o ser incompletos</li>
@@ -51,8 +92,9 @@
             <li>NO proporcionamos predicciones de sismos (científicamente imposible)</li>
             <li>Los datos son para fines informativos y educativos únicamente</li>
         </ul>
-
-        <h2>5. Uso Apropiado</h2>
+</section>
+<section class="legal-section" id="seccion-5" aria-labelledby="titulo-5">
+<h2 id="titulo-5">5. Uso Apropiado</h2>
         <p><strong>Está permitido:</strong></p>
         <ul>
             <li>Uso personal, educativo y de investigación</li>
@@ -69,16 +111,18 @@
             <li>Redistribuir datos sin mencionar la fuente</li>
             <li>Usar para crear alertas no oficiales que puedan causar pánico</li>
         </ul>
-
-        <h2>6. API y Límites Técnicos</h2>
+</section>
+<section class="legal-section" id="seccion-6" aria-labelledby="titulo-6">
+<h2 id="titulo-6">6. API y Límites Técnicos</h2>
         <p>El uso de la API está sujeto a:</p>
         <ul>
             <li>Límites de rate limiting para uso justo</li>
             <li>Disponibilidad sujeta a mantenimiento</li>
             <li>Cambios en la estructura de datos con aviso previo</li>
         </ul>
-
-        <h2>7. Responsabilidad</h2>
+</section>
+<section class="legal-section" id="seccion-7" aria-labelledby="titulo-7">
+<h2 id="titulo-7">7. Responsabilidad</h2>
         <p>SismosVE se proporciona "tal como está". NO nos hacemos responsables por:</p>
         <ul>
             <li>Decisiones tomadas basadas en los datos mostrados</li>
@@ -86,35 +130,51 @@
             <li>Pérdidas por interrupciones del servicio</li>
             <li>Precisión de datos de terceros (FUNVISIS)</li>
         </ul>
-
-        <h2>8. Propiedad Intelectual</h2>
+</section>
+<section class="legal-section" id="seccion-8" aria-labelledby="titulo-8">
+<h2 id="titulo-8">8. Propiedad Intelectual</h2>
         <ul>
             <li><strong>Datos sísmicos:</strong> Propiedad de FUNVISIS, dominio público</li>
             <li><strong>Código de la plataforma:</strong> Desarrollado por SismosVE</li>
             <li><strong>Diseño y interfaz:</strong> Copyright SismosVE 2025</li>
         </ul>
-
-        <h2>9. Modificaciones</h2>
+</section>
+<section class="legal-section" id="seccion-9" aria-labelledby="titulo-9">
+<h2 id="titulo-9">9. Modificaciones</h2>
         <p>Nos reservamos el derecho de:</p>
         <ul>
             <li>Modificar estos términos con aviso previo</li>
             <li>Suspender o discontinuar el servicio</li>
             <li>Actualizar funcionalidades de la plataforma</li>
         </ul>
-
-        <h2>10. Contacto y Soporte</h2>
+</section>
+<section class="legal-section" id="seccion-10" aria-labelledby="titulo-10">
+<h2 id="titulo-10">10. Contacto y Soporte</h2>
         <p>Para consultas sobre estos términos:</p>
         <ul>
             <li>Email: legal@sismosve.com</li>
             <li>Reporte de problemas: support@sismosve.com</li>
         </ul>
-
-        <h2>11. Ley Aplicable</h2>
+</section>
+<section class="legal-section" id="seccion-11" aria-labelledby="titulo-11">
+<h2 id="titulo-11">11. Ley Aplicable</h2>
         <p>Estos términos se rigen por las leyes de Venezuela y están sujetos a la jurisdicción de los tribunales venezolanos.</p>
 
         <div class="warning">
             <strong>Recordatorio:</strong> En caso de sismo real, sigue siempre las instrucciones de las autoridades oficiales de emergencia. SismosVE es solo una herramienta informativa complementaria.
         </div>
+</section>
+                </article>
+            </div>
+        </main>
+        <footer class="legal-footer">
+            <p>SismosVE · Información sobre el servicio</p>
+            <nav aria-label="Enlaces del sitio">
+                <a href="/">Mapa de sismos</a>
+                <a href="/static/docs/privacy.html">Privacidad</a>
+                <a href="/static/docs/terms.html">Términos de uso</a>
+            </nav>
+        </footer>
     </div>
 </body>
 </html>

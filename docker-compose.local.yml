@@ -1,0 +1,18 @@
+# Isolated review instance: leaves the existing service on port 8000 untouched.
+services:
+  sismosve-review:
+    build: .
+    image: sismosve:svelte-review
+    container_name: sismosve-svelte-review
+    ports:
+      - "127.0.0.1:8001:8000"
+    volumes:
+      - review_data:/app/data
+    environment:
+      PUBLIC_URL: https://sismosve.rafnixg.dev
+      DATA_FILE: /app/data/sismosve.json
+    restart: unless-stopped
+
+volumes:
+  review_data:
+    name: sismosve-review-data

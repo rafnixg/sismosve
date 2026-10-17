@@ -1,0 +1,71 @@
+# Archivos de Git
+.git
+.gitignore
+.github
+
+# Archivos de Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env
+pip-log.txt
+pip-delete-this-directory.txt
+.tox
+.coverage
+.coverage.*
+.cache
+.pytest_cache
+.playwright-cli
+.playwright
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.venv
+venv/
+ENV/
+
+# Archivos de desarrollo
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Documentación y archivos de respaldo
+README_*.md
+*.backup*
+*.bak
+*.tmp
+*.temp
+
+# Logs
+*.log
+logs/
+
+# Scripts de desarrollo
+*.bat
+*.sh
+!docker-entrypoint.sh
+test_*.py
+conftest.py
+
+# Archivos específicos del proyecto que no necesita el contenedor
+clear_cloudflare_cache.py
+clean_project.sh
+install_deps.bat
+
+# Node modules si existen
+node_modules
+frontend/node_modules
+static/ui
+output
+.local
+data/
+npm-debug.log*

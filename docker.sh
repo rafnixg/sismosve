@@ -46,7 +46,7 @@ run_dev() {
     docker run -d \
         --name sismosve-dev \
         -p 8000:8000 \
-        -v "$(pwd)/sismosve.json:/app/sismosve.json" \
+        -v "sismove-data:/app/data" \
         -v "$(pwd)/logs:/app/logs" \
         --restart unless-stopped \
         sismosve:latest

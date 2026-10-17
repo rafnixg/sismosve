@@ -28,11 +28,11 @@ def test_health_endpoint():
         assert data['status'] == 'healthy', f"Expected healthy status, got {data.get('status')}"
         
         print('✅ Health check passed')
-        return True
+        return None
         
     except Exception as e:
         print(f'❌ Health check failed: {e}')
-        return False
+        raise
 
 def test_main_endpoint():
     """Test del endpoint principal"""
@@ -47,22 +47,15 @@ def test_main_endpoint():
         assert 'text/html' in response.headers.get('content-type', ''), "Expected HTML response"
         
         print('✅ Main endpoint test passed')
-        return True
+        return None
         
     except Exception as e:
         print(f'❌ Main endpoint test failed: {e}')
-        return False
+        raise
 
 if __name__ == '__main__':
     print('🧪 Running SismosVE tests...')
     
-    success = True
-    success &= test_health_endpoint()
-    success &= test_main_endpoint()
-    
-    if success:
-        print('🎉 All tests passed!')
-        sys.exit(0)
-    else:
-        print('💥 Some tests failed!')
-        sys.exit(1)
+    test_health_endpoint()
+    test_main_endpoint()
+    print('🎉 All tests passed!')

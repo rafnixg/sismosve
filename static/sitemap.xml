@@ -6,16 +6,15 @@
   
   <!-- Página principal -->
   <url>
-    <loc>https://sismos.rafnixg.dev/</loc>
-    <lastmod>2025-09-25</lastmod>
+    <loc>__PUBLIC_URL__/</loc>
     <changefreq>hourly</changefreq>
     <priority>1.0</priority>
     <mobile:mobile/>
-    <xhtml:link rel="alternate" hreflang="es-ve" href="https://sismos.rafnixg.dev/"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://sismos.rafnixg.dev/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://sismos.rafnixg.dev/"/>
+    <xhtml:link rel="alternate" hreflang="es-ve" href="__PUBLIC_URL__/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="__PUBLIC_URL__/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="__PUBLIC_URL__/"/>
     <image:image>
-      <image:loc>https://sismos.rafnixg.dev/static/images/sismos-venezuela-preview.jpg</image:loc>
+      <image:loc>__PUBLIC_URL__/static/images/sismos-venezuela-preview.png</image:loc>
       <image:title>Mapa de sismos en Venezuela en tiempo real</image:title>
       <image:caption>Vista del mapa interactivo mostrando sismos recientes en Venezuela con datos de FUNVISIS</image:caption>
     </image:image>
@@ -23,59 +22,51 @@
 
   <!-- API Endpoints públicos -->
   <url>
-    <loc>https://sismos.rafnixg.dev/api/sismos</loc>
-    <lastmod>2025-09-25</lastmod>
+    <loc>__PUBLIC_URL__/api/sismos</loc>
     <changefreq>always</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://sismos.rafnixg.dev/api/sismos/stats</loc>
-    <lastmod>2025-09-25</lastmod>
+    <loc>__PUBLIC_URL__/api/sismos/stats</loc>
     <changefreq>always</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://sismos.rafnixg.dev/api/health</loc>
-    <lastmod>2025-09-25</lastmod>
+    <loc>__PUBLIC_URL__/api/health</loc>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
 
   <!-- Documentación -->
   <url>
-    <loc>https://sismos.rafnixg.dev/static/docs/privacy.html</loc>
-    <lastmod>2025-09-25</lastmod>
+    <loc>__PUBLIC_URL__/static/docs/privacy.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
 
   <url>
-    <loc>https://sismos.rafnixg.dev/static/docs/terms.html</loc>
-    <lastmod>2025-09-25</lastmod>
+    <loc>__PUBLIC_URL__/static/docs/terms.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
 
   <!-- Recursos importantes -->
   <url>
-    <loc>https://sismos.rafnixg.dev/static/manifest.json</loc>
-    <lastmod>2025-09-25</lastmod>
+    <loc>__PUBLIC_URL__/static/manifest.json</loc>
     <changefreq>weekly</changefreq>
     <priority>0.3</priority>
   </url>
 
   <url>
-    <loc>https://sismos.rafnixg.dev/static/robots.txt</loc>
-    <lastmod>2025-09-25</lastmod>
+    <loc>__PUBLIC_URL__/static/robots.txt</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
 
   <url>
-    <loc>https://sismos.rafnixg.dev/static/llms.txt</loc>
-    <lastmod>2025-09-25</lastmod>
+    <loc>__PUBLIC_URL__/static/llms.txt</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

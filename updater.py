@@ -12,11 +12,13 @@ import glob
 from datetime import datetime
 import logging
 import requests
+from pathlib import Path
+from app.storage import get_data_file, initialize_data_file, validate_data, write_json_atomically
 
 class SismosUpdater:
-    def __init__(self):
+    def __init__(self, output_file=None):
         self.url = "http://www.funvisis.gob.ve/maravilla.json"
-        self.output_file = "sismosve.json"
+        self.output_file = str(output_file if output_file is not None else get_data_file())
         self.log_file = "updater.log"
         self.update_interval = 300  # 5 minutos en segundos
         
@@ -66,27 +68,21 @@ class SismosUpdater:
     def save_data(self, data):
         """Guarda los datos en el archivo local"""
         try:
+            validate_data(data)
+            Path(self.output_file).parent.mkdir(parents=True, exist_ok=True)
             # Crear backup del archivo anterior si existe
             if os.path.exists(self.output_file):
-                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
                 backup_name = f"{self.output_file}.backup_{timestamp}"
                 
-                # Crear backup con timestamp único
-                try:
-                    os.rename(self.output_file, backup_name)
-                    self.logger.info(f"Backup creado: {backup_name}")
-                except OSError as e:
-                    # Si falla el rename, intentar copiar
-                    shutil.copy2(self.output_file, backup_name)
-                    os.remove(self.output_file)
-                    self.logger.info(f"Backup creado (copiado): {backup_name}")
+                shutil.copy2(self.output_file, backup_name)
+                self.logger.info(f"Backup creado: {backup_name}")
                 
                 # Limpiar backups antiguos (mantener solo los últimos 5)
                 self.cleanup_old_backups()
             
             # Guardar los nuevos datos
-            with open(self.output_file, 'w', encoding='utf-8') as f:
-                json.dump(data, f, indent=2, ensure_ascii=False)
+            write_json_atomically(Path(self.output_file), data)
             
             self.logger.info(f"Datos guardados en {self.output_file}")
             return True
@@ -145,6 +141,7 @@ class SismosUpdater:
     
     def run_once(self):
         """Ejecuta una actualización única"""
+        initialize_data_file(Path(self.output_file))
         self.logger.info("=" * 50)
         self.logger.info("Iniciando actualización de datos...")
         

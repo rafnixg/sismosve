@@ -9,6 +9,9 @@ import glob
 from datetime import datetime
 from typing import Optional, List, Dict, Any
 import logging
+from pathlib import Path
+
+from ..storage import get_data_file, write_json_atomically
 
 from ..models.schemas import (
     SismosCollection,
@@ -23,8 +26,8 @@ from ..models.schemas import (
 class SismosService:
     """Servicio para manejar operaciones de sismos"""
 
-    def __init__(self, data_file: str = "sismosve.json"):
-        self.data_file = data_file
+    def __init__(self, data_file: Optional[str] = None):
+        self.data_file = str(data_file if data_file is not None else get_data_file())
         self.logger = logging.getLogger(__name__)
 
     def load_sismos(self) -> Optional[SismosCollection]:
@@ -51,13 +54,13 @@ class SismosService:
     def save_sismos(self, sismos: SismosCollection, create_backup: bool = True) -> bool:
         """Guarda los sismos en el archivo JSON"""
         try:
+            Path(self.data_file).parent.mkdir(parents=True, exist_ok=True)
             # Crear backup si es necesario
             if create_backup and os.path.exists(self.data_file):
                 self._create_backup()
 
             # Guardar datos
-            with open(self.data_file, "w", encoding="utf-8") as f:
-                json.dump(sismos.dict(), f, indent=2, ensure_ascii=False)
+            write_json_atomically(Path(self.data_file), sismos.model_dump())
 
             self.logger.info(f"Sismos guardados en {self.data_file}")
             return True
@@ -164,7 +167,7 @@ class SismosService:
     def _create_backup(self):
         """Crea un backup del archivo de datos"""
         try:
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
             backup_name = f"{self.data_file}.backup_{timestamp}"
 
             shutil.copy2(self.data_file, backup_name)
