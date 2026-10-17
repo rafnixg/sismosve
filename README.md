@@ -1,7 +1,7 @@
 # SismosVE - Monitoreo de Sismos Venezuela (sismosve.rafnixg.dev)
 
 [![CI/CD Pipeline](https://github.com/rafnixg/sismosve/actions/workflows/ci.yml/badge.svg)](https://github.com/rafnixg/sismosve/actions/workflows/ci.yml)
-[![Build and Push Docker Image](https://github.com/rafnixg/sismosve/actions/workflows/docker-build.yml/badge.svg)](https://github.com/rafnixg/sismosve/actions/workflows/docker-build.yml)
+[![Release](https://github.com/rafnixg/sismosve/actions/workflows/release.yml/badge.svg)](https://github.com/rafnixg/sismosve/actions/workflows/release.yml)
 [![Python 3.14](https://img.shields.io/badge/python-3.14-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com)
 [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?logo=docker&logoColor=white)](https://github.com/rafnixg/sismosve/pkgs/container/sismosve)
@@ -216,16 +216,19 @@ python clear_cloudflare_cache.py
 
 ### GitHub Actions Workflows
 - **`ci.yml`**: Tests automatizados en cada push/PR
-- **`docker-build.yml`**: Build y push a GitHub Container Registry
-- **`release.yml`**: Releases automatizados con tags
-- **`maintenance.yml`**: Tareas de mantenimiento programadas
+- **`release.yml`**: Publicación exclusiva para tags `vX.Y.Z`, después de las pruebas
+- **`docker-build.yml`**: Construcción multi-arquitectura reutilizable, llamada solo por releases
+- **`container-scan.yml`**: Análisis por digest, SARIF y bloqueo ante vulnerabilidades altas/críticas
+- **`maintenance.yml`**: Auditorías y salud de la imagen publicada, sin construir ni borrar imágenes
+
+Los PR y los pushes a ramas no generan imágenes Docker. Consulta el [flujo de publicación y sus validaciones](GITHUB_ACTIONS_README.md) y el [informe de seguridad](security_best_practices_report.md).
 
 ### Container Registry
 ```bash
 # Tags disponibles
-ghcr.io/rafnixg/sismosve:latest      # Última versión
+ghcr.io/rafnixg/sismosve:latest      # Última publicación estable aprobada
 ghcr.io/rafnixg/sismosve:v1.0.0      # Versión específica
-ghcr.io/rafnixg/sismosve:main        # Branch main
+ghcr.io/rafnixg/sismosve:1.0.0       # Alias de esa versión
 ```
 
 ### Multi-Architecture Support
