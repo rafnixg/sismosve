@@ -72,7 +72,7 @@ jobs:
     - name: Verify API and server-rendered SEO
       env:
         TESTING: 'true'
-      run: python -m pytest test_app.py test_ui.py -q
+      run: python -m pytest test_app.py test_ui.py test_storage.py -q
 
     - name: Test application startup
       env:

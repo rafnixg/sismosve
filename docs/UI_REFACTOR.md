@@ -89,3 +89,24 @@ desbordamiento. Docker reconstruido y dejado en ejecución.
 
 ![Resumen en escritorio](ui-review/summary-desktop.png)
 ![Resumen en móvil](ui-review/summary-mobile.png)
+
+## Persistencia del JSON
+
+API y actualizadores comparten `DATA_FILE=/app/data/sismosve.json` en Docker.
+El volumen de revisión es `sismosve-review-data`, separado del código; el de
+Dokploy existente se reutiliza mediante su montaje en `/app/data`.
+El usuario de runtime tiene UID/GID estables `10001:10001` y las dependencias
+están en `/opt/venv`, también accesibles para el contenedor auxiliar de restauración.
+
+El arranque valida y conserva el JSON existente. Las actualizaciones posteriores
+usan reemplazo atómico y mantienen hasta cinco respaldos en el mismo volumen.
+La [guía de migración](PERSISTENT_DATA.md) contiene los comandos para el volumen
+ya creado, sin montar ni cambiar permisos sobre `/app`.
+
+Validación: 21 pruebas Python pasan en Windows y dentro de la imagen Python 3.14.
+Cubren inicialización única, archivo corrupto, permisos, fallos de reemplazo,
+respaldos y su retención, formato FUNVISIS y descarga fallida. Se migró el JSON
+de revisión conservando su hash al arrancar; después de una escritura real se
+recreó el contenedor y se verificó que JSON y respaldos conservaran sus hashes.
+Una actualización manual real desde FUNVISIS también guardó los datos y su
+respaldo en el volumen. La instancia queda saludable en localhost:8001.

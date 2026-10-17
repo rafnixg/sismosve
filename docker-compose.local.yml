@@ -7,7 +7,12 @@ services:
     ports:
       - "127.0.0.1:8001:8000"
     volumes:
-      - ./.local/sismosve.json:/app/sismosve.json:rw
+      - review_data:/app/data
     environment:
       PUBLIC_URL: https://sismosve.rafnixg.dev
+      DATA_FILE: /app/data/sismosve.json
     restart: unless-stopped
+
+volumes:
+  review_data:
+    name: sismosve-review-data

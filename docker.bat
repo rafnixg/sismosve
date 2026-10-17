@@ -51,7 +51,7 @@ goto end
 :run
 echo 🚀 Ejecutando SismosVE en modo desarrollo...
 call :build
-docker run -d --name sismosve-dev -p 8000:8000 -v "%cd%\sismosve.json:/app/sismosve.json" -v "%cd%\logs:/app/logs" --restart unless-stopped sismosve:latest
+docker run -d --name sismosve-dev -p 8000:8000 -v "sismove-data:/app/data" -v "%cd%\logs:/app/logs" --restart unless-stopped sismosve:latest
 if !errorlevel! equ 0 (
     echo ✅ Contenedor iniciado
     echo 🌐 Aplicación disponible en: http://localhost:8000

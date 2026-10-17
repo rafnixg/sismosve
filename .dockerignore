@@ -54,6 +54,7 @@ logs/
 *.sh
 !docker-entrypoint.sh
 test_*.py
+conftest.py
 
 # Archivos específicos del proyecto que no necesita el contenedor
 clear_cloudflare_cache.py
@@ -66,4 +67,5 @@ frontend/node_modules
 static/ui
 output
 .local
+data/
 npm-debug.log*

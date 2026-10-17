@@ -328,7 +328,7 @@ npm run build
 cd ..
 pip install -r requirements.txt pytest httpx
 $env:TESTING = "true"
-python -m pytest test_app.py test_ui.py -q
+python -m pytest test_app.py test_ui.py test_storage.py -q
 Remove-Item Env:TESTING
 python -m uvicorn app.main:app --host 127.0.0.1 --port 8001
 ```
@@ -341,18 +341,18 @@ Las fechas y horas de los registros se muestran según la fuente.
 
 ### Contenedor de revisión aislado
 
-En PowerShell, desde la raíz (crear la copia solo la primera vez):
+En PowerShell, desde la raíz:
 
 ```powershell
-New-Item -ItemType Directory -Force .local
-Copy-Item sismosve.json .local/sismosve.json
 docker compose -f docker-compose.local.yml up -d --build
 ```
 
 Acceso: http://localhost:8001. Nombre: `sismosve-svelte-review`.
-Los datos de prueba están separados del JSON del repositorio; el actualizador
-puede reemplazarlos con datos de FUNVISIS. Si la fuente falla, se conservan
-los registros existentes y la UI informa el fallo de actualización manual.
+Los datos se guardan en el volumen de revisión `sismosve-review-data`, en
+`/app/data/sismosve.json`. El JSON existente se conserva al iniciar. Si falta,
+se inicializa una vez con la muestra del repositorio; la próxima consulta a
+FUNVISIS ocurre a los cinco minutos o al pulsar el botón de actualización.
+Si la fuente falla, se conservan los registros existentes.
 
 ```powershell
 docker compose -f docker-compose.local.yml logs -f
@@ -362,6 +362,15 @@ docker compose -f docker-compose.local.yml stop
 El Compose principal mantiene el puerto 8000 por defecto; se puede modificar
 con `SISMOSVE_PORT`. La imagen compila el frontend durante el build y no requiere
 Node en runtime. Los recursos compilados no se versionan; el lockfile sí.
+
+### Persistencia del JSON y Dokploy
+
+API y actualizadores comparten `DATA_FILE`. En Docker su valor es
+`/app/data/sismosve.json`; los respaldos se guardan en el mismo volumen.
+El usuario del contenedor usa UID/GID `10001:10001`. El volumen existente de
+Dokploy debe montarse en `/app/data` y permitir escritura a ese usuario.
+La [guía de migración](docs/PERSISTENT_DATA.md) incluye los comandos para copiar
+el JSON anterior, preservar el archivo existente y verificar permisos.
 
 ### Comportamiento de la nueva interfaz
 

@@ -53,8 +53,10 @@ class UpdaterService:
             self.scheduler.start()
             self.is_running = True
 
-            # Ejecutar primera actualización inmediatamente
-            await self.update_sismos_data()
+            # Preserve restored/persisted records at startup. Normal polling and
+            # manual updates can replace them later with a successful download.
+            if self.sismos_service.load_sismos() is None:
+                await self.update_sismos_data()
 
             self.logger.info(
                 f"Scheduler iniciado. Actualizando cada {self.update_interval} segundos"
