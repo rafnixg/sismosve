@@ -1,265 +1,83 @@
-# 🚀 GitHub Actions Workflows
+# GitHub Actions de SismosVE
 
-## Workflows Configurados
+Las imágenes Docker se construyen **exclusivamente al hacer push de un tag de versión**. Los PR y los pushes a ramas ejecutan validaciones sin construir ni publicar imágenes.
 
-### 1. 🐳 **Docker Build & Push** (`docker-build.yml`)
+| Evento | Pruebas y auditorías | Construcción Docker | Release |
+|---|---|---|---|
+| PR hacia `main` | Sí | No | No |
+| Push a `main` o `develop` | Sí | No | No |
+| Push de `vX.Y.Z` | Sí, antes del build | amd64 y arm64 | Después del análisis |
+| Push de `vX.Y.Z-rc.1` u otra preversión | Sí, antes del build | amd64 y arm64 | Prerelease |
+| Tag fuera de `v*` | No | No | No |
+| Tag `v*` inválido | Falla la validación | No | No |
+| Mantenimiento semanal o manual | Dependencias, imagen publicada y salud | No | No |
 
-**Triggers:**
-- Push a `main` y `develop`
-- Tags `v*`
-- Pull requests a `main`
-- Manual dispatch
+## Flujo de release
 
-**Features:**
-- ✅ **Multi-architecture builds** (amd64, arm64)
-- ✅ **GitHub Container Registry** (ghcr.io)
-- ✅ **Layer caching** optimizado
-- ✅ **Security scanning** con Trivy
-- ✅ **SBOM generation** para compliance
-- ✅ **Automated deployment** staging/production
+`release.yml` es la única entrada de publicación y solo escucha `push.tags: ['v*']`.
 
-**Image Tags Generated:**
+1. `release_metadata.py` valida SemVer con prefijo `v`, normaliza el nombre del repositorio para GHCR y detecta cualquier preversión.
+2. Se reutiliza `ci.yml`: actionlint, zizmor, pruebas de la política de publicación, auditorías de dependencias, Svelte y pruebas de API, SEO y almacenamiento.
+3. `docker-build.yml`, disponible solo como workflow reutilizable y con una segunda condición de tag, construye `linux/amd64` y `linux/arm64`. Publica los tags exactos `vX.Y.Z` y `X.Y.Z`, con SBOM y procedencia de BuildKit. `pull: true` actualiza las imágenes base.
+4. `container-scan.yml` analiza el **digest recién publicado** en ambas arquitecturas. Guarda JSON, SARIF y SBOM como artefactos durante 30 días y envía los resultados a Code Scanning. Incluye vulnerabilidades sin parche.
+5. Cualquier hallazgo HIGH o CRITICAL bloquea la promoción a `latest` y la creación de la release. Un informe ausente o inválido también falla. Los tags de versión ya publicados permanecen disponibles para investigar; su existencia por sí sola no demuestra que hayan superado el análisis.
+6. Si todo pasa, una versión estable actualiza `latest` mediante el mismo manifiesto, sin reconstruir. Una preversión nunca cambia `latest`.
+7. Se crea la release de GitHub con el digest verificado, notas automáticas y los archivos de despliegue. El workflow no modifica el código ni los tags.
+
+`latest` corresponde a la última publicación estable que terminó correctamente, no necesariamente al mayor número SemVer si se publican versiones antiguas fuera de orden. Conviene publicar las versiones estables en orden y configurar reglas de repositorio que protejan `v*` contra modificaciones y borrados.
+
+Los formatos históricos `v.0.1.0` y `v.0.1.1` se conservan en Git; las nuevas publicaciones requieren `v0.1.0`, sin el punto adicional. No se admite metadato `+build`, incompatible con los nombres de tags Docker.
+
+Ejemplo para una próxima versión **después del merge**:
+
 ```bash
-# Branch-based
-ghcr.io/rafnixg/sismosve:main
-ghcr.io/rafnixg/sismosve:develop
-
-# Version tags
-ghcr.io/rafnixg/sismosve:v1.0.0
-ghcr.io/rafnixg/sismosve:v1.0
-ghcr.io/rafnixg/sismosve:v1
-
-# Special tags
-ghcr.io/rafnixg/sismosve:latest
-ghcr.io/rafnixg/sismosve:20250925-143022
-ghcr.io/rafnixg/sismosve:main-sha256
+git switch main
+git pull --ff-only
+git tag v0.2.1
+git push origin v0.2.1
 ```
 
-### 2. 🧪 **CI/CD Pipeline** (`ci.yml`)
+El workflow de Docker no tiene `workflow_dispatch`. El mantenimiento manual solo inspecciona la imagen que ya está publicada.
 
-**Triggers:**
-- Push a `main` y `develop`
-- Pull requests a `main`
+## CI y permisos
 
-**Jobs:**
-- **test**: Tests con múltiples versiones Python (3.9, 3.10, 3.11)
-- **code-quality**: Linting con Black, isort, Bandit, Safety
-- **docker-test**: Testing de la imagen Docker
-- **notify**: Notificaciones de estado
+El frontend se compila una sola vez y se comparte con Python 3.9, 3.11, 3.13 y 3.14. El artefacto incluye `.vite/manifest.json`, necesario para las pruebas de integración. También se comprueban cambios en `requirements.txt`; ya no se excluyen todos los `.txt`.
 
-**Quality Checks:**
-- ✅ **Black** - Code formatting
-- ✅ **isort** - Import sorting
-- ✅ **Bandit** - Security analysis
-- ✅ **Safety** - Dependency vulnerabilities
-- ✅ **Flake8** - Style guide enforcement
+Los workflows parten de `contents: read`; cada job solicita únicamente las escrituras que necesita: GHCR para publicar, `security-events` para SARIF y `contents` para crear la release. Los PR no reciben permisos de publicación ni secretos de despliegue. Todos los Actions externos están fijados por SHA completo y checkout usa `persist-credentials: false`.
 
-### 3. 📦 **Release Automation** (`release.yml`)
+Se mantiene la sintaxis local `./.github/workflows/...` para compatibilidad con actionlint 1.7.12. Cuatro comentarios `zizmor: ignore[self-repository]` documentan esa única excepción de estilo; no desactivan las comprobaciones de permisos, inyección o fijación de SHA.
 
-**Triggers:**
-- Tags `v*` (ej: `v1.0.0`, `v2.1.3`)
+## Mantenimiento y alertas
 
-**Features:**
-- ✅ **Changelog automático** desde git commits
-- ✅ **Release notes** generadas
-- ✅ **Artifacts** incluidos (docker-compose.yml, nginx.conf)
-- ✅ **Documentation updates**
-- ✅ **Pre-release detection** (alpha, beta, rc)
+El domingo a las 02:00 UTC, o manualmente, `maintenance.yml`:
 
-**Release Assets:**
-- `docker-compose.yml`
-- `nginx.conf`
-- `requirements.txt`
-- Auto-generated changelog
+- Audita los requisitos Python reales con pip-audit y el lockfile npm, conservando ambos informes y los códigos de error.
+- Resuelve `latest` a un digest y reutiliza el análisis de ambas arquitecturas sin generar imágenes.
+- Prueba la salud del contenedor publicado, comprueba `status == healthy` y elimina siempre el contenedor de prueba.
 
-### 4. 🛠️ **Maintenance** (`maintenance.yml`)
+Se retiraron las issues semanales basadas en el tamaño del JSON y la eliminación automática de versiones de GHCR. Un JSON no vacío no demuestra vulnerabilidades y borrar versiones por antigüedad puede destruir releases o manifiestos de varias arquitecturas.
 
-**Triggers:**
-- Scheduled: Domingos 2:00 AM UTC
-- Manual dispatch
+Dependabot contempla Python, npm en `/frontend`, Docker y Actions. **La configuración YAML de actualizaciones no activa Dependabot alerts ni security updates:** esas opciones deben habilitarse en Settings → Advanced Security del repositorio. El estado observado y las limitaciones del análisis están en [el informe de seguridad](security_best_practices_report.md).
 
-**Jobs:**
-- **dependency-check**: Security & updates check
-- **cleanup-packages**: Old image cleanup
-- **health-check**: Latest image testing
+Las alertas históricas del antiguo análisis `docker-build.yml:security-scan` pueden seguir visibles al cambiar de configuración. Después de un análisis nuevo en la rama por defecto, comparar los resultados por digest y retirar la configuración antigua desde Code Scanning si corresponde; no descartar alertas en bloque como falsos positivos.
 
-**Automated Tasks:**
-- ✅ **Security vulnerability** scanning
-- ✅ **Outdated dependencies** detection
-- ✅ **Docker image cleanup** (keep last 10)
-- ✅ **Health checks** on latest builds
-- ✅ **Maintenance issues** creation
+## Verificación local
 
-### 5. 🤖 **Dependabot** (`dependabot.yml`)
-
-**Schedules:**
-- **Python deps**: Lunes 9:00 AM
-- **Docker images**: Martes 9:00 AM  
-- **GitHub Actions**: Miércoles 9:00 AM
-
-**Configuration:**
-- ✅ **Smart ignores** para major updates críticos
-- ✅ **Automatic assignment**
-- ✅ **Labeled PRs** por categoría
-- ✅ **Semantic commit** messages
-
-## 🏃‍♂️ Workflow Execution Flow
-
-### Development Workflow:
-```mermaid
-graph TD
-    A[Push to develop] --> B[CI Tests]
-    B --> C[Docker Build]
-    C --> D[Security Scan]
-    D --> E[Deploy to Staging]
-```
-
-### Release Workflow:
-```mermaid
-graph TD
-    A[Create Tag v*] --> B[CI Tests]
-    B --> C[Docker Build Multi-arch]
-    C --> D[Security Scan]
-    D --> E[Create Release]
-    E --> F[Deploy to Production]
-    F --> G[Update Documentation]
-```
-
-### Maintenance Workflow:
-```mermaid
-graph TD
-    A[Weekly Schedule] --> B[Dependency Check]
-    B --> C[Security Scan]
-    C --> D[Create Issues]
-    D --> E[Cleanup Old Images]
-    E --> F[Health Check]
-```
-
-## 🎯 Usage Examples
-
-### Creating a Release:
 ```bash
-# Create and push a tag
-git tag v1.2.0
-git push origin v1.2.0
+python -m pip install PyYAML==6.0.3 zizmor==1.31.1
+python .github/scripts/check_workflows.py
+go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
+actionlint
+zizmor --offline --no-config --strict-collection .github/workflows
 
-# This triggers:
-# 1. Full CI pipeline
-# 2. Multi-arch Docker build
-# 3. Security scanning
-# 4. Release creation
-# 5. Documentation updates
+cd frontend
+npm ci
+npm audit --audit-level=high
+npm run check
+npm test
+npm run build
+cd ..
+TESTING=true python -m pytest test_app.py test_ui.py test_storage.py -q
 ```
 
-### Using Built Images:
-```bash
-# Latest stable
-docker pull ghcr.io/rafnixg/sismosve:latest
-
-# Specific version
-docker pull ghcr.io/rafnixg/sismosve:v1.2.0
-
-# Development
-docker pull ghcr.io/rafnixg/sismosve:develop
-```
-
-### Manual Workflow Dispatch:
-```bash
-# Via GitHub CLI
-gh workflow run docker-build.yml
-
-# Via GitHub UI
-# Repository > Actions > Select workflow > Run workflow
-```
-
-## 🔒 Security Features
-
-### Container Registry:
-- ✅ **Private registry** (ghcr.io)
-- ✅ **Token-based auth** (GITHUB_TOKEN)
-- ✅ **Multi-arch support**
-- ✅ **Vulnerability scanning**
-
-### Security Scanning:
-- ✅ **Trivy** - Container vulnerabilities
-- ✅ **Bandit** - Python security issues
-- ✅ **Safety** - Dependency vulnerabilities
-- ✅ **SARIF upload** to GitHub Security tab
-
-### Permissions:
-- ✅ **Least privilege** principle
-- ✅ **Read-only** by default
-- ✅ **Explicit write** permissions
-- ✅ **Package write** only when needed
-
-## 📊 Monitoring & Notifications
-
-### Success Notifications:
-- ✅ **Build completion**
-- ✅ **Release creation**
-- ✅ **Deployment status**
-- ✅ **Security scan results**
-
-### Failure Handling:
-- ✅ **Automatic failure** detection
-- ✅ **Detailed error** logging
-- ✅ **Artifact collection**
-- ✅ **Issue creation** for maintenance
-
-### Metrics Available:
-- **Build times** - Workflow execution duration
-- **Success rates** - Pass/fail ratios
-- **Image sizes** - Docker image optimization
-- **Security scores** - Vulnerability counts
-
-## 🔧 Configuration
-
-### Environment Variables:
-```yaml
-REGISTRY: ghcr.io
-IMAGE_NAME: ${{ github.repository }}
-PYTHONPATH: /app
-PYTHONUNBUFFERED: 1
-```
-
-### Secrets Required:
-- `GITHUB_TOKEN` - Automático (GitHub provided)
-
-### Repository Settings:
-- ✅ **Actions enabled**
-- ✅ **Packages enabled**  
-- ✅ **Security alerts** enabled
-- ✅ **Dependabot** enabled
-
-## 🚀 Getting Started
-
-### 1. Enable Workflows:
-```bash
-# Push to trigger first run
-git add .github/
-git commit -m "ci: add GitHub Actions workflows"
-git push origin main
-```
-
-### 2. Create First Release:
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-### 3. Monitor Execution:
-- Go to **Actions** tab in GitHub
-- Check workflow runs
-- Review security alerts
-- Monitor package registry
-
-### 4. Use Built Images:
-```bash
-# Pull and run
-docker pull ghcr.io/rafnixg/sismosve:latest
-docker run -p 8000:8000 ghcr.io/rafnixg/sismosve:latest
-```
-
----
-
-**🎯 Ready for CI/CD!** Tu proyecto SismosVE tiene un pipeline completo de integración y despliegue continuo con GitHub Actions.
+La validación de publicación es estática y prueba los helpers con casos válidos, inválidos y hallazgos simulados. La construcción, el acceso a GHCR y la creación real de una release solo pueden verificarse en GitHub al publicar un tag; un PR no realiza esas operaciones.

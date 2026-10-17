@@ -2,141 +2,71 @@ name: Release
 
 on:
   push:
-    tags:
-      - 'v*'
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
+  validate:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      image: ${{ steps.version.outputs.image }}
+      tag: ${{ steps.version.outputs.tag }}
+      version: ${{ steps.version.outputs.version }}
+      prerelease: ${{ steps.version.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Validate version before any build or write
+        id: version
+        run: python .github/scripts/release_metadata.py
+
+  checks:
+    needs: validate
+    uses: ./.github/workflows/ci.yml # zizmor: ignore[self-repository] -- Keep syntax compatible with actionlint 1.7.12.
+
+  image:
+    needs: [validate, checks]
+    permissions:
+      contents: read
+      packages: write
+      security-events: write
+    uses: ./.github/workflows/docker-build.yml # zizmor: ignore[self-repository] -- Keep syntax compatible with actionlint 1.7.12.
+    with:
+      image: ${{ needs.validate.outputs.image }}
+      tag: ${{ needs.validate.outputs.tag }}
+      version: ${{ needs.validate.outputs.version }}
+      prerelease: ${{ fromJSON(needs.validate.outputs.prerelease) }}
+
   create-release:
+    needs: [validate, image]
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     permissions:
       contents: write
-      packages: read
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-
-    - name: Get version from tag
-      id: version
-      run: |
-        VERSION=${GITHUB_REF#refs/tags/}
-        echo "version=${VERSION}" >> $GITHUB_OUTPUT
-        echo "version_number=${VERSION#v}" >> $GITHUB_OUTPUT
-
-    - name: Generate changelog
-      id: changelog
-      run: |
-        # Generate changelog from git log
-        PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
-        if [ -n "$PREVIOUS_TAG" ]; then
-          CHANGELOG=$(git log ${PREVIOUS_TAG}..HEAD --pretty=format:"- %s" --no-merges)
-        else
-          CHANGELOG=$(git log --pretty=format:"- %s" --no-merges)
-        fi
-        
-        # Write changelog to file
-        cat > CHANGELOG.md << EOF
-        # Changelog for ${{ steps.version.outputs.version }}
-        
-        ## Changes
-        ${CHANGELOG}
-        
-        ## Docker Image
-        \`\`\`bash
-        docker pull ghcr.io/${{ github.repository }}:${{ steps.version.outputs.version }}
-        \`\`\`
-        
-        ## Quick Start
-        \`\`\`bash
-        # Using Docker
-        docker run -p 8000:8000 ghcr.io/${{ github.repository }}:${{ steps.version.outputs.version }}
-        
-        # Using Docker Compose
-        curl -O https://raw.githubusercontent.com/${{ github.repository }}/main/docker-compose.yml
-        docker-compose up -d
-        \`\`\`
-        
-        ## Features
-        - 🗺️ Interactive seismic map with Leaflet.js
-        - 📊 Real-time statistics and analysis
-        - 🚀 Optimized FastAPI backend
-        - 📱 Responsive design for all devices
-        - 🔄 Automatic FUNVISIS data updates
-        - ⏰ 12-hour timestamp format
-        - 🎨 SEO optimized with social media tags
-        - 🐳 Docker ready with multi-architecture support
-        EOF
-
-    - name: Create Release
-      uses: softprops/action-gh-release@v2
-      with:
-        name: SismosVE ${{ steps.version.outputs.version }}
-        body_path: CHANGELOG.md
-        draft: false
-        prerelease: ${{ contains(steps.version.outputs.version, 'alpha') || contains(steps.version.outputs.version, 'beta') || contains(steps.version.outputs.version, 'rc') }}
-        generate_release_notes: true
-        files: |
-          docker-compose.yml
-          nginx.conf
-          requirements.txt
-        token: ${{ secrets.GITHUB_TOKEN }}
-
-  update-docker-readme:
-    runs-on: ubuntu-latest
-    needs: create-release
-    permissions:
-      contents: write
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Get version from tag
-      id: version
-      run: |
-        VERSION=${GITHUB_REF#refs/tags/}
-        echo "version=${VERSION}" >> $GITHUB_OUTPUT
-        echo "version_number=${VERSION#v}" >> $GITHUB_OUTPUT
-
-    - name: Update Docker documentation
-      run: |
-        # Update version in Docker documentation
-        sed -i "s/sismosve:latest/sismosve:${{ steps.version.outputs.version }}/g" DOCKER_README.md
-        sed -i "s/version: '.*'/version: '${{ steps.version.outputs.version_number }}'/g" docker-compose.yml
-
-    - name: Commit changes
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add .
-        git diff --staged --quiet || git commit -m "docs: update version references to ${{ steps.version.outputs.version }}"
-        BRANCH=${GITHUB_REF#refs/tags/}
-        git push origin $BRANCH
-        
-
-  notify-release:
-    runs-on: ubuntu-latest
-    needs: [create-release, update-docker-readme]
-    if: always()
-    
-    steps:
-    - name: Get version from tag
-      id: version
-      run: |
-        VERSION=${GITHUB_REF#refs/tags/}
-        echo "version=${VERSION}" >> $GITHUB_OUTPUT
-
-    - name: Success notification
-      if: needs.create-release.result == 'success'
-      run: |
-        echo "🎉 Release ${{ steps.version.outputs.version }} created successfully!"
-        echo "📦 Docker image: ghcr.io/${{ github.repository }}:${{ steps.version.outputs.version }}"
-        echo "🌐 Release page: https://github.com/${{ github.repository }}/releases/tag/${{ steps.version.outputs.version }}"
-
-    - name: Failure notification
-      if: needs.create-release.result == 'failure'
-      run: |
-        echo "❌ Release creation failed"
-        exit 1
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Create release after both platforms pass security checks
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ needs.validate.outputs.tag }}
+          IMAGE_DIGEST: ${{ needs.image.outputs.image }}
+          PRERELEASE: ${{ needs.validate.outputs.prerelease }}
+        run: |
+          printf 'Imagen verificada: %s\n' "$IMAGE_DIGEST" > release-notes.md
+          flags=(--verify-tag --generate-notes --notes-file release-notes.md --title "SismosVE $RELEASE_TAG")
+          if [[ "$PRERELEASE" == 'true' ]]; then
+            flags+=(--prerelease --latest=false)
+          fi
+          gh release create "$RELEASE_TAG" "${flags[@]}" docker-compose.yml nginx.conf requirements.txt
