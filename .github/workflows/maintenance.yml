@@ -2,194 +2,110 @@ name: Maintenance
 
 on:
   schedule:
-    # Ejecutar todos los domingos a las 2:00 AM UTC
     - cron: '0 2 * * 0'
   workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: maintenance
+  cancel-in-progress: false
 
 jobs:
   dependency-check:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    
+    timeout-minutes: 15
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.14'
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+      - run: python -m pip install pip-audit==2.10.1
+      - name: Audit application Python requirements
+        run: pip-audit -r requirements.txt --progress-spinner off --format json --output pip-audit.json
+      - name: Audit frontend lockfile
+        if: ${{ !cancelled() }}
+        working-directory: frontend
+        run: npm audit --audit-level=high --json > ../npm-audit.json
+      - name: Preserve dependency reports
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: dependency-security
+          path: |
+            pip-audit.json
+            npm-audit.json
+          if-no-files-found: error
+          retention-days: 30
 
-    - name: Set up Python
-      uses: actions/setup-python@v6
-      with:
-        python-version: 3.11
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pip-tools safety bandit
-
-    - name: Check for security vulnerabilities
-      id: security
-      run: |
-        echo "## Security Check Results" > security-report.md
-        echo "" >> security-report.md
-        
-        # Safety check
-        echo "### Dependency Vulnerabilities" >> security-report.md
-        safety check --json > safety.json || true
-        if [ -s safety.json ]; then
-          echo "⚠️ Security vulnerabilities found in dependencies" >> security-report.md
-          echo "\`\`\`json" >> security-report.md
-          cat safety.json >> security-report.md
-          echo "\`\`\`" >> security-report.md
-        else
-          echo "✅ No security vulnerabilities found in dependencies" >> security-report.md
-        fi
-        
-        echo "" >> security-report.md
-        
-        # Bandit check
-        echo "### Code Security Issues" >> security-report.md
-        bandit -r . -f json -o bandit.json || true
-        if [ -s bandit.json ]; then
-          echo "⚠️ Potential security issues found in code" >> security-report.md
-          echo "\`\`\`json" >> security-report.md
-          head -50 bandit.json >> security-report.md
-          echo "\`\`\`" >> security-report.md
-        else
-          echo "✅ No security issues found in code" >> security-report.md
-        fi
-
-    - name: Check for outdated dependencies
-      run: |
-        echo "## Dependency Update Check" >> dependency-report.md
-        echo "" >> dependency-report.md
-        
-        pip list --outdated --format=json > outdated.json
-        if [ -s outdated.json ] && [ "$(cat outdated.json)" != "[]" ]; then
-          echo "📦 Outdated packages found:" >> dependency-report.md
-          echo "\`\`\`json" >> dependency-report.md
-          cat outdated.json >> dependency-report.md
-          echo "\`\`\`" >> dependency-report.md
-        else
-          echo "✅ All dependencies are up to date" >> dependency-report.md
-        fi
-
-    - name: Update base Docker image info
-      run: |
-        echo "## Docker Image Updates" >> docker-report.md
-        echo "" >> docker-report.md
-        
-        # Check for Python base image updates
-        CURRENT_PYTHON=$(grep "FROM python:" Dockerfile | head -1 | cut -d':' -f2 | cut -d' ' -f1)
-        echo "Current Python base image: python:${CURRENT_PYTHON}" >> docker-report.md
-        
-        # Note: In a real scenario, you would check Docker Hub API for updates
-        echo "📝 Check [Python Docker Hub](https://hub.docker.com/_/python/tags) for latest versions" >> docker-report.md
-
-    - name: Create maintenance issue
-      uses: actions/github-script@v8
-      with:
-        script: |
-          const fs = require('fs');
-          
-          let body = "# 🛠️ Weekly Maintenance Report\n\n";
-          body += "This is an automated maintenance report.\n\n";
-          
-          // Add security report
-          if (fs.existsSync('security-report.md')) {
-            body += fs.readFileSync('security-report.md', 'utf8') + "\n\n";
-          }
-          
-          // Add dependency report
-          if (fs.existsSync('dependency-report.md')) {
-            body += fs.readFileSync('dependency-report.md', 'utf8') + "\n\n";
-          }
-          
-          // Add Docker report
-          if (fs.existsSync('docker-report.md')) {
-            body += fs.readFileSync('docker-report.md', 'utf8') + "\n\n";
-          }
-          
-          body += "## Actions Required\n\n";
-          body += "- [ ] Review security vulnerabilities\n";
-          body += "- [ ] Update outdated dependencies\n";
-          body += "- [ ] Check Docker base image updates\n";
-          body += "- [ ] Test updated dependencies\n";
-          body += "- [ ] Update documentation if needed\n\n";
-          body += "---\n";
-          body += "*This issue was created automatically by the maintenance workflow.*";
-          
-          // Create issue
-          github.rest.issues.create({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            title: `🛠️ Weekly Maintenance Report - ${new Date().toISOString().split('T')[0]}`,
-            body: body,
-            labels: ['maintenance', 'dependencies']
-          });
-
-  cleanup-packages:
+  published-image:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     permissions:
-      packages: write
-    
+      contents: read
+      packages: read
+    outputs:
+      image: ${{ steps.resolve.outputs.image }}
     steps:
-    - name: Delete old container images
-      uses: actions/github-script@v8
-      with:
-        script: |
-          const packages = await github.rest.packages.getAllPackageVersionsForPackageOwnedByUser({
-            package_type: 'container',
-            package_name: 'sismosve',
-            username: context.repo.owner
-          });
-          
-          // Keep last 10 versions, delete older ones
-          const versionsToDelete = packages.data
-            .filter(version => !version.metadata.container.tags.includes('latest'))
-            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-            .slice(10);
-          
-          for (const version of versionsToDelete) {
-            try {
-              await github.rest.packages.deletePackageVersionForUser({
-                package_type: 'container',
-                package_name: 'sismosve',
-                username: context.repo.owner,
-                package_version_id: version.id
-              });
-              console.log(`Deleted package version ${version.id}`);
-            } catch (error) {
-              console.log(`Failed to delete version ${version.id}: ${error.message}`);
-            }
-          }
+      - uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - name: Resolve the existing latest image without building
+        id: resolve
+        env:
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          image="ghcr.io/${REPOSITORY,,}:latest"
+          docker pull "$image"
+          digest=$(docker image inspect --format '{{index .RepoDigests 0}}' "$image")
+          printf 'image=%s\n' "$digest" >> "$GITHUB_OUTPUT"
+
+  security-scan:
+    needs: published-image
+    permissions:
+      contents: read
+      packages: read
+      security-events: write
+    uses: ./.github/workflows/container-scan.yml # zizmor: ignore[self-repository] -- Keep syntax compatible with actionlint 1.7.12.
+    with:
+      image: ${{ needs.published-image.outputs.image }}
 
   health-check:
+    needs: published-image
     runs-on: ubuntu-latest
-    
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      packages: read
     steps:
-    - name: Check latest Docker image
-      run: |
-        echo "🏥 Performing health check on latest Docker image"
-        
-        # Pull and run latest image
-        docker pull ghcr.io/${{ github.repository }}:latest
-        
-        # Start container
-        docker run -d --name health-test -p 8000:8000 ghcr.io/${{ github.repository }}:latest
-        
-        # Wait for startup
-        sleep 30
-        
-        # Health check
-        if curl -f http://localhost:8000/api/health; then
-          echo "✅ Health check passed"
-        else
-          echo "❌ Health check failed"
+      - uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - name: Test the published digest
+        env:
+          IMAGE: ${{ needs.published-image.outputs.image }}
+        run: |
+          docker run -d --name health-test -p 127.0.0.1:8000:8000 "$IMAGE"
+          for _ in {1..30}; do
+            if curl --fail --silent --max-time 3 http://127.0.0.1:8000/api/health > health.json; then
+              if jq -e '.status == "healthy"' health.json; then
+                exit 0
+              fi
+            fi
+            sleep 2
+          done
           docker logs health-test
           exit 1
-        fi
-        
-        # Cleanup
-        docker stop health-test
-        docker rm health-test
+      - name: Always clean up the test container
+        if: ${{ always() }}
+        run: docker rm -f health-test

@@ -1,6 +1,16 @@
 # Dependabot configuration for automated dependency updates
 version: 2
 updates:
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps"
+    labels:
+      - "dependencies"
+
   # Python dependencies
   - package-ecosystem: "pip"
     directory: "/"
