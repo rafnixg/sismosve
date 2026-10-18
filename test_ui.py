@@ -7,8 +7,16 @@ from xml.etree import ElementTree
 from fastapi.testclient import TestClient
 from app.main import app
 from app.config import PUBLIC_URL
+from app.version import __version__
 
 client = TestClient(app)
+
+
+def test_public_api_reports_the_project_version():
+    expected = Path('VERSION').read_text(encoding='ascii').strip()
+    assert __version__ == expected
+    assert client.get('/openapi.json').json()['info']['version'] == expected
+    assert client.get('/api/health').json()['version'] == expected
 
 
 def test_seo_is_available_without_javascript():

@@ -16,28 +16,48 @@ Las imágenes Docker se construyen **exclusivamente al hacer push de un tag de v
 
 `release.yml` es la única entrada de publicación y solo escucha `push.tags: ['v*']`.
 
-1. `release_metadata.py` valida SemVer con prefijo `v`, normaliza el nombre del repositorio para GHCR y detecta cualquier preversión.
+1. `release_metadata.py` valida SemVer con prefijo `v`, exige que el tag coincida con `VERSION` y comprueba que los manifiestos npm, Docker, README, llms.txt y changelog estén sincronizados. Normaliza el nombre del repositorio para GHCR y detecta cualquier preversión. Un error impide llegar al build y a cualquier publicación.
 2. Se reutiliza `ci.yml`: actionlint, zizmor, pruebas de la política de publicación, auditorías de dependencias, Svelte y pruebas de API, SEO y almacenamiento.
 3. `docker-build.yml`, disponible solo como workflow reutilizable y con una segunda condición de tag, construye `linux/amd64` y `linux/arm64`. Publica los tags exactos `vX.Y.Z` y `X.Y.Z`, con SBOM y procedencia de BuildKit. `pull: true` actualiza las imágenes base.
 4. `container-scan.yml` analiza el **digest recién publicado** en ambas arquitecturas. Guarda JSON, SARIF y SBOM como artefactos durante 30 días y envía los resultados a Code Scanning. Incluye vulnerabilidades sin parche.
 5. Cualquier hallazgo HIGH o CRITICAL bloquea la promoción a `latest` y la creación de la release. Un informe ausente o inválido también falla. Los tags de versión ya publicados permanecen disponibles para investigar; su existencia por sí sola no demuestra que hayan superado el análisis.
 6. Si todo pasa, una versión estable actualiza `latest` mediante el mismo manifiesto, sin reconstruir. Una preversión nunca cambia `latest`.
-7. Se crea la release de GitHub con el digest verificado, notas automáticas y los archivos de despliegue. El workflow no modifica el código ni los tags.
+7. Se crea la release de GitHub con el digest verificado, notas automáticas, `VERSION`, `CHANGELOG.md` y los archivos de despliegue. El workflow no modifica el código ni los tags.
 
 `latest` corresponde a la última publicación estable que terminó correctamente, no necesariamente al mayor número SemVer si se publican versiones antiguas fuera de orden. Conviene publicar las versiones estables en orden y configurar reglas de repositorio que protejan `v*` contra modificaciones y borrados.
 
 Los formatos históricos `v.0.1.0` y `v.0.1.1` se conservan en Git; las nuevas publicaciones requieren `v0.1.0`, sin el punto adicional. No se admite metadato `+build`, incompatible con los nombres de tags Docker.
 
-Ejemplo para una próxima versión **después del merge**:
+Antes del merge, preparar la versión en una rama mediante
+`python .github/scripts/project_version.py --set MAJOR.MINOR.PATCH` (sustituir
+el número), actualizar `CHANGELOG.md` y ejecutar
+`python .github/scripts/project_version.py --check`.
+
+Después del merge, crear un tag anotado desde `main` limpio y actualizado:
 
 ```bash
 git switch main
 git pull --ff-only
-git tag v0.2.1
-git push origin v0.2.1
+SISMOSVE_VERSION=$(cat VERSION)
+python .github/scripts/project_version.py --check
+git tag -a "v${SISMOSVE_VERSION}" -m "SismosVE v${SISMOSVE_VERSION}"
+git push origin "refs/tags/v${SISMOSVE_VERSION}"
 ```
 
 El workflow de Docker no tiene `workflow_dispatch`. El mantenimiento manual solo inspecciona la imagen que ya está publicada.
+
+`VERSION` contiene SemVer sin prefijo `v`. La API expone ese mismo número en
+OpenAPI y `/api/health`. Docker recibe `APP_VERSION` desde el tag ya validado;
+su valor por defecto se sincroniza para builds locales, y el build comprueba
+que coincida con el archivo. Las etiquetas `version` y
+`org.opencontainers.image.version` no incluyen el prefijo `v`. Compose hereda
+las etiquetas de la imagen y no introduce otro número de versión.
+
+El tag `v0.3.0` se conserva: su build terminó correctamente, pero el
+[run 39151713755](https://github.com/rafnixg/sismosve/actions/runs/39151713755)
+detectó 52 HIGH en cada arquitectura y bloqueó la promoción a `latest` y la
+release de GitHub. No se considera una publicación aprobada. Las correcciones
+se preparan para `0.3.1`, sin mover ni sobrescribir el tag anterior.
 
 ## CI y permisos
 
@@ -67,6 +87,7 @@ Las alertas históricas del antiguo análisis `docker-build.yml:security-scan` p
 
 ```bash
 python -m pip install PyYAML==6.0.3 zizmor==1.31.1
+python .github/scripts/project_version.py --check
 python .github/scripts/check_workflows.py
 go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
 actionlint

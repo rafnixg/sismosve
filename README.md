@@ -3,9 +3,12 @@
 [![CI/CD Pipeline](https://github.com/rafnixg/sismosve/actions/workflows/ci.yml/badge.svg)](https://github.com/rafnixg/sismosve/actions/workflows/ci.yml)
 [![Release](https://github.com/rafnixg/sismosve/actions/workflows/release.yml/badge.svg)](https://github.com/rafnixg/sismosve/actions/workflows/release.yml)
 [![Python 3.14](https://img.shields.io/badge/python-3.14-blue.svg)](https://www.python.org/downloads/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.143.2+-green.svg)](https://fastapi.tiangolo.com)
 [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?logo=docker&logoColor=white)](https://github.com/rafnixg/sismosve/pkgs/container/sismosve)
 [![GitHub stars](https://img.shields.io/github/stars/rafnixg/sismosve.svg?style=social&label=Star)](https://github.com/rafnixg/sismosve)
+
+**Versión del código: `0.3.1`**. Consulta el [historial de cambios](CHANGELOG.md)
+y las [releases publicadas](https://github.com/rafnixg/sismosve/releases).
 
 ## 🎯 Descripción
 Aplicación web moderna para visualizar y monitorear sismos en Venezuela usando datos oficiales de FUNVISIS con arquitectura modular optimizada.
@@ -25,7 +28,7 @@ Aplicación web moderna para visualizar y monitorear sismos en Venezuela usando 
 - **🌐 GitHub Container Registry** con builds multi-arquitectura
 
 ## 🛠️ Tecnologías
-- **Backend**: FastAPI + Python 3.11+ con arquitectura modular (imagen Docker con Python 3.14)
+- **Backend**: FastAPI + Python 3.11+ con arquitectura modular (imagen Docker con Python 3.14 y Alpine 3.24)
 - **Frontend**: Svelte 5 + TypeScript + Vite + Leaflet.js
 - **Containerización**: Docker + Docker Compose
 - **CI/CD**: GitHub Actions con automated testing
@@ -224,11 +227,17 @@ python clear_cloudflare_cache.py
 Los PR y los pushes a ramas no generan imágenes Docker. Consulta el [flujo de publicación y sus validaciones](GITHUB_ACTIONS_README.md) y el [informe de seguridad](security_best_practices_report.md).
 
 ### Container Registry
+
+Después de que la versión del código complete el workflow de release:
+
 ```bash
-# Tags disponibles
-ghcr.io/rafnixg/sismosve:latest      # Última publicación estable aprobada
-ghcr.io/rafnixg/sismosve:v1.0.0      # Versión específica
-ghcr.io/rafnixg/sismosve:1.0.0       # Alias de esa versión
+# Última publicación estable aprobada
+docker pull ghcr.io/rafnixg/sismosve:latest
+
+# Versión específica y alias (VERSION contiene el número sin prefijo v)
+SISMOSVE_VERSION=$(cat VERSION)
+docker pull "ghcr.io/rafnixg/sismosve:v${SISMOSVE_VERSION}"
+docker pull "ghcr.io/rafnixg/sismosve:${SISMOSVE_VERSION}"
 ```
 
 ### Multi-Architecture Support
@@ -286,17 +295,42 @@ test: agregar tests
 chore: tareas de mantenimiento
 ```
 
-## � Versioning
+## Versionado
 
 El proyecto sigue [Semantic Versioning](https://semver.org/):
 - **MAJOR**: Cambios incompatibles en API
 - **MINOR**: Nuevas funcionalidades compatibles  
 - **PATCH**: Correcciones de bugs
 
-### Changelog Reciente
-- **v2.0.0**: 🏗️ Arquitectura modular, Docker, CI/CD
-- **v1.0.0**: ✨ Aplicación base con mapa interactivo
-- **v0.1.x**: 🚀 Versiones iniciales de desarrollo
+[`VERSION`](VERSION) es la fuente de la versión del código. FastAPI la usa en
+OpenAPI (`/openapi.json`, visible en `/docs`) y en `/api/health`. El frontend,
+las etiquetas Docker y la documentación se sincronizan con ese archivo.
+Compose conserva la versión de la imagen y no declara otra versión de la aplicación.
+
+Antes de preparar una release:
+
+```bash
+python .github/scripts/project_version.py --set 0.3.1
+# Actualizar CHANGELOG.md con los cambios de la versión
+python .github/scripts/project_version.py --check
+```
+
+La comprobación se ejecuta también en CI. Después del merge, el tag debe ser
+`v` seguido exactamente del contenido de `VERSION`; una diferencia bloquea
+el release antes del build. No se modifican tags ya publicados. Consulta el
+[procedimiento de publicación](GITHUB_ACTIONS_README.md#flujo-de-release).
+
+### Historial reciente
+
+- **v0.3.0**: UI Svelte, SEO, persistencia del JSON, dependencias y publicación por tags.
+- **v0.2.0**: Organización modular del backend FastAPI.
+- **v0.1.x**: Versiones iniciales.
+
+El detalle de la próxima versión está en [CHANGELOG.md](CHANGELOG.md).
+
+El tag `v0.3.0` existe, pero su análisis de seguridad bloqueó `latest` y la
+release de GitHub. La corrección se prepara para `0.3.1`; el tag publicado
+se conserva. La existencia de un tag o imagen versionada no implica aprobación.
 
 ## �📞 Soporte
 

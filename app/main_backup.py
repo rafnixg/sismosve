@@ -15,6 +15,7 @@ from jinja2 import UndefinedError
 
 from .services import SismosService, UpdaterService
 from .models import SismosCollection, SismosStats, ApiResponse
+from .version import __version__
 
 
 # Configurar logging con manejo de errores
@@ -100,7 +101,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="SismosVE API",
     description="API para datos de sismos de Venezuela desde FUNVISIS",
-    version="1.0.0",
+    version=__version__,
     lifespan=lifespan,
     
 )
