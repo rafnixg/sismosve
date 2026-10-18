@@ -1,3 +1,8 @@
+/*
+Copyright (C) 2025-2026 Rafnix Guzman (@rafnixg).
+SPDX-License-Identifier: AGPL-3.0-only
+Additional author-attribution term under section 7(b): see repository-root NOTICE.
+*/
 @import '../../tokens.css';
 * { box-sizing: border-box; }
 html, body { margin: 0; overflow-x: clip; }
@@ -72,6 +77,8 @@ input[aria-invalid="true"] { border-color: var(--color-high); background: var(--
 .filter-error, .map-notice { color: var(--color-high); font-size: var(--text-sm); padding: var(--space-sm); }
 .filter-error { flex-basis: 100%; min-height: 1lh; padding: 0; }
 .site-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-md); margin-top: var(--space-xl); padding-top: var(--space-md); border-top: var(--rule-width) solid var(--color-rule); font-size: var(--text-sm); }
+.footer-notices { display: grid; gap: var(--space-xs); max-width: 80ch; }
+.footer-notices p { margin: 0; }
 .site-footer nav { display: flex; flex-wrap: wrap; gap: var(--space-md); }.site-footer a { white-space: nowrap; }
 .skip-link { position: absolute; top: -100px; }.skip-link:focus { top: 0; background: var(--color-paper); padding: var(--space-md); z-index: 2000; }
 @media (max-width: 900px) { .shell { padding: var(--space-md); }.site-header { align-items: start; }.report { max-width: 290px; flex-shrink: 1; }.workspace { grid-template-columns: minmax(0, 1fr); }.map-canvas { height: 420px; }.event-list { height: 460px; } }

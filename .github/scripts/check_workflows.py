@@ -1,3 +1,6 @@
+# Copyright (C) 2025-2026 Rafnix Guzman (@rafnixg).
+# SPDX-License-Identifier: AGPL-3.0-only
+# Additional author-attribution term under section 7(b): see repository-root NOTICE.
 """Regression checks for the release boundary, credentials and scan failure policy.
 
 Run from the repository root with Python + PyYAML. No Docker daemon is used.
@@ -108,7 +111,9 @@ class WorkflowPolicy(unittest.TestCase):
         version = check_version()
         build = next(s for s in workflow('docker-build.yml')['jobs']['build-and-push']['steps']
                      if s.get('id') == 'build')
-        self.assertEqual(build['with']['build-args'], 'APP_VERSION=${{ inputs.version }}')
+        self.assertIn('APP_VERSION=${{ inputs.version }}', build['with']['build-args'].splitlines())
+        self.assertIn('SOURCE_URL=https://github.com/${{ github.repository }}/archive/${{ github.sha }}.tar.gz',
+                      build['with']['build-args'].splitlines())
         self.assertIn('org.opencontainers.image.version=${{ inputs.version }}', build['with']['labels'])
         self.assertEqual(metadata('v' + version, 'rafnixg/sismosve')['version'], version)
 

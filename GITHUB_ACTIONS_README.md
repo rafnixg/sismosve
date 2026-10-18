@@ -22,7 +22,7 @@ Las imágenes Docker se construyen **exclusivamente al hacer push de un tag de v
 4. `container-scan.yml` analiza el **digest recién publicado** en ambas arquitecturas. Guarda JSON, SARIF y SBOM como artefactos durante 30 días y envía los resultados a Code Scanning. Incluye vulnerabilidades sin parche.
 5. Cualquier hallazgo HIGH o CRITICAL bloquea la promoción a `latest` y la creación de la release. Un informe ausente o inválido también falla. Los tags de versión ya publicados permanecen disponibles para investigar; su existencia por sí sola no demuestra que hayan superado el análisis.
 6. Si todo pasa, una versión estable actualiza `latest` mediante el mismo manifiesto, sin reconstruir. Una preversión nunca cambia `latest`.
-7. Se crea la release de GitHub con el digest verificado, notas automáticas, `VERSION`, `CHANGELOG.md` y los archivos de despliegue. El workflow no modifica el código ni los tags.
+7. Se crea la release de GitHub con el digest verificado, notas automáticas, `LICENSE`, `NOTICE`, `VERSION`, `CHANGELOG.md` y los archivos de despliegue. El workflow no modifica el código ni los tags.
 
 `latest` corresponde a la última publicación estable que terminó correctamente, no necesariamente al mayor número SemVer si se publican versiones antiguas fuera de orden. Conviene publicar las versiones estables en orden y configurar reglas de repositorio que protejan `v*` contra modificaciones y borrados.
 
@@ -52,6 +52,12 @@ su valor por defecto se sincroniza para builds locales, y el build comprueba
 que coincida con el archivo. Las etiquetas `version` y
 `org.opencontainers.image.version` no incluyen el prefijo `v`. Compose hereda
 las etiquetas de la imagen y no introduce otro número de versión.
+
+Los builds de release fijan `SOURCE_URL` al archivo de código del SHA publicado,
+para que el enlace visible `/source` ofrezca el código correspondiente de esa
+versión. Los forks deben ofrecer también sus modificaciones y los scripts de
+construcción y despliegue. La imagen declara la licencia base `AGPL-3.0-only`;
+`NOTICE` incluye la condición adicional de atribución bajo la sección 7(b).
 
 El tag `v0.3.0` se conserva: su build terminó correctamente, pero el
 [run 39151713755](https://github.com/rafnixg/sismosve/actions/runs/39151713755)

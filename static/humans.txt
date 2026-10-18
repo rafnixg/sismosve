@@ -60,9 +60,12 @@
 
 /* LICENSE */
 
-	Data: Public domain (from FUNVISIS)
-	Code: Check repository for license details
-	Design: © 2025 SismosVE
+	Data: FUNVISIS; subject to the provider's rights and terms
+	Code and original design: AGPL-3.0-only; additional author attribution under section 7(b)
+	Copyright: © 2025–2026 Rafnix Guzman (@rafnixg)
+	License: /license
+	Attribution: /notice
+	Corresponding Source: /source
 	Third-party: Respective owners
 
 /* MISSION */

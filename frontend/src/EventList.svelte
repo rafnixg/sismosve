@@ -1,3 +1,8 @@
+<!--
+Copyright (C) 2025-2026 Rafnix Guzman (@rafnixg).
+SPDX-License-Identifier: AGPL-3.0-only
+Additional author-attribution term under section 7(b): see repository-root NOTICE.
+-->
 <script lang="ts">
   import { formatTime, hasCoordinates, magnitudeClass, type Earthquake } from './data';
   let { events, selected, onselect }: { events: Earthquake[]; selected: string | null; onselect: (id: string) => void } = $props();

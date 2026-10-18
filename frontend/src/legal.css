@@ -1,3 +1,8 @@
+/*
+Copyright (C) 2025-2026 Rafnix Guzman (@rafnixg).
+SPDX-License-Identifier: AGPL-3.0-only
+Additional author-attribution term under section 7(b): see repository-root NOTICE.
+*/
 @import '@fontsource/source-sans-3/latin-400.css';
 @import '@fontsource/source-sans-3/latin-600.css';
 @import '@fontsource/source-sans-3/latin-700.css';
@@ -70,6 +75,7 @@ h1, h2 { font-style: normal; overflow-wrap: anywhere; }
 .legal-section .warning { margin-top: var(--space-lg); margin-bottom: 0; }
 .legal-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-md); margin-top: var(--space-xl); padding-block: var(--space-lg); color: var(--color-ink-2); font-size: var(--text-sm); border-top: var(--rule-width) solid var(--color-rule); }
 .legal-footer p { margin: 0; }
+.footer-notices { display: grid; gap: var(--space-xs); max-width: 80ch; }
 .legal-footer nav { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-lg); }
 .legal-footer a { white-space: nowrap; }
 .skip-link { position: absolute; top: -100px; }

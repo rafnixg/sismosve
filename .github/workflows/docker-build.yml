@@ -55,7 +55,9 @@ jobs:
           pull: true
           platforms: linux/amd64,linux/arm64
           push: true
-          build-args: APP_VERSION=${{ inputs.version }}
+          build-args: |
+            APP_VERSION=${{ inputs.version }}
+            SOURCE_URL=https://github.com/${{ github.repository }}/archive/${{ github.sha }}.tar.gz
           tags: |
             ${{ inputs.image }}:${{ inputs.tag }}
             ${{ inputs.image }}:${{ inputs.version }}
