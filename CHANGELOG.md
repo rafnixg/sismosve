@@ -5,7 +5,7 @@ Las versiones siguen [Semantic Versioning](https://semver.org/). Una entrada
 las imágenes versionadas solo se consideran aprobados cuando el workflow de
 release completa sus controles de seguridad.
 
-## [0.3.1] - Sin publicar
+## [0.3.1] - 2026-10-18
 
 - Se centraliza la versión de la aplicación en `VERSION` y se sincronizan los
   manifiestos npm, las etiquetas Docker y la documentación.
@@ -37,5 +37,6 @@ El historial anterior se conserva en los [tags del repositorio](https://github.c
 Los primeros tags `v.0.1.0` y `v.0.1.1` usaron un punto adicional; los nuevos
 tags siguen el formato `vMAJOR.MINOR.PATCH`.
 
+[0.3.1]: https://github.com/rafnixg/sismosve/tree/v0.3.1
 [0.3.0]: https://github.com/rafnixg/sismosve/tree/v0.3.0
 [0.2.0]: https://github.com/rafnixg/sismosve/tree/v0.2.0

@@ -326,11 +326,12 @@ el release antes del build. No se modifican tags ya publicados. Consulta el
 - **v0.2.0**: Organización modular del backend FastAPI.
 - **v0.1.x**: Versiones iniciales.
 
-El detalle de la próxima versión está en [CHANGELOG.md](CHANGELOG.md).
+El detalle de cada versión está en [CHANGELOG.md](CHANGELOG.md).
 
-El tag `v0.3.0` existe, pero su análisis de seguridad bloqueó `latest` y la
-release de GitHub. La corrección se prepara para `0.3.1`; el tag publicado
-se conserva. La existencia de un tag o imagen versionada no implica aprobación.
+El análisis de seguridad de `v0.3.0` bloqueó `latest` y la release de GitHub.
+La versión `0.3.1` incorpora la corrección y vuelve a ejecutar esos controles;
+el tag anterior se conserva. La existencia de un tag o imagen versionada no
+implica aprobación: comprueba el resultado del workflow de release.
 
 ## �📞 Soporte
 

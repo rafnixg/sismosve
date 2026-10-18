@@ -57,7 +57,7 @@ El tag `v0.3.0` se conserva: su build terminó correctamente, pero el
 [run 39151713755](https://github.com/rafnixg/sismosve/actions/runs/39151713755)
 detectó 52 HIGH en cada arquitectura y bloqueó la promoción a `latest` y la
 release de GitHub. No se considera una publicación aprobada. Las correcciones
-se preparan para `0.3.1`, sin mover ni sobrescribir el tag anterior.
+se incorporan en `0.3.1`, sin mover ni sobrescribir el tag anterior.
 
 ## CI y permisos
 
