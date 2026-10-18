@@ -56,9 +56,10 @@ updates:
       time: "09:00"
     open-pull-requests-limit: 2
     ignore:
-      # Keep the validated Node 22 LTS toolchain; reassess 26 after its LTS transition.
+      # Change the Node LTS major in CI and Docker together after validation.
+      # Ignoring only the latest major can propose an older, unsupported major.
       - dependency-name: "node"
-        versions: ["~> 26.0"]
+        update-types: ["version-update:semver-major"]
     assignees:
       - "rafnixg"
     commit-message:
