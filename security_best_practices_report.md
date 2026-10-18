@@ -1,5 +1,10 @@
 # Revisión de seguridad de GitHub Actions y contenedores
 
+> Actualización del 18 de octubre de 2026: el [diagnóstico y la corrección para
+> 0.3.1](docs/RELEASE_0.3.1.md) documentan el fallo real de `v0.3.0` y la
+> validación de la imagen corregida. El informe siguiente conserva la evidencia
+> histórica del análisis inicial.
+
 Fecha: 17 de octubre de 2026. Base revisada: `5e12e25d942815accebcf2a7eed523ec42efa386` (`main`, después del PR #21).
 
 ## Resumen ejecutivo

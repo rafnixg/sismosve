@@ -3,14 +3,13 @@ import os
 import re
 from pathlib import Path
 
+from project_version import check_version, validate_version
+
 
 def metadata(tag, repository):
-    # SemVer identifiers, excluding '+' (not supported in Docker tag names).
-    numeric = r'(?:0|[1-9][0-9]*)'
-    identifier = rf'(?:{numeric}|[0-9]*[A-Za-z-][0-9A-Za-z-]*)'
-    pattern = rf'v{numeric}\.{numeric}\.{numeric}(?:-{identifier}(?:\.{identifier})*)?'
-    if len(tag) > 128 or not re.fullmatch(pattern, tag):
+    if not tag.startswith('v'):
         raise ValueError('Use vMAJOR.MINOR.PATCH or vMAJOR.MINOR.PATCH-prerelease; no build metadata')
+    validate_version(tag[1:])
     if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repository):
         raise ValueError('Invalid GitHub repository')
     return {
@@ -26,7 +25,8 @@ if __name__ == '__main__':
         raise SystemExit('Docker releases require a pushed version tag')
     try:
         values = metadata(os.environ['GITHUB_REF_NAME'], os.environ['GITHUB_REPOSITORY'])
-    except ValueError as error:
+        check_version(expected_version=values['version'])
+    except (ValueError, OSError, KeyError) as error:
         raise SystemExit(str(error)) from error
     with Path(os.environ['GITHUB_OUTPUT']).open('a', encoding='utf-8') as output:
         for key, value in values.items():

@@ -4,7 +4,7 @@
 ## Información del Sitio
 Nombre: SismosVE
 Descripción: Plataforma web para monitoreo de actividad sísmica en Venezuela
-URL: https://sismos.rafnixg.dev
+URL: https://sismosve.rafnixg.dev
 Tipo: Aplicación web de utilidad pública
 Categoría: Ciencias de la Tierra, Sismología, Monitoreo de Emergencias
 
@@ -87,7 +87,7 @@ Cuando uses datos de SismosVE:
 - Documentación técnica: Disponible en repositorio del proyecto
 
 ## Última Actualización
-Versión: 1.0
-Fecha: 2025-09-25
-Arquitectura: Modular refactorizada
+Versión: 0.3.1
+Fecha: 2026-10-18
+Arquitectura: FastAPI modular y Svelte 5 con SEO servido desde el backend
 Estado: Producción activa

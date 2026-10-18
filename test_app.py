@@ -5,12 +5,36 @@ Test simple para verificar que la aplicación funciona
 import os
 import sys
 import tempfile
+from io import BytesIO
 
 # Configurar logging para test
 os.environ['LOG_FILE'] = os.path.join(tempfile.gettempdir(), 'test_sismos_api.log')
 
 # Agregar el directorio actual al path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+
+def test_container_health_probe_rejects_unhealthy_http_200(monkeypatch):
+    from app import healthcheck
+
+    for status, expected in [('healthy', 0), ('unhealthy', 1), ('error', 1)]:
+        body = ('{"status": "' + status + '"}').encode()
+        monkeypatch.setattr(healthcheck, 'urlopen', lambda *args, **kwargs: BytesIO(body))
+        assert healthcheck.main() == expected
+
+
+def test_container_health_probe_fails_on_invalid_response_or_network_error(monkeypatch):
+    from app import healthcheck
+
+    monkeypatch.setattr(healthcheck, 'urlopen', lambda *args, **kwargs: BytesIO(b'invalid json'))
+    assert healthcheck.main() == 1
+
+    def timeout(*args, **kwargs):
+        raise TimeoutError('Service unavailable')
+
+    monkeypatch.setattr(healthcheck, 'urlopen', timeout)
+    assert healthcheck.main() == 1
+
 
 def test_health_endpoint():
     """Test del endpoint de health check"""

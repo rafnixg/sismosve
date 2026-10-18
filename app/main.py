@@ -13,6 +13,7 @@ from fastapi.templating import Jinja2Templates
 
 from .config import lifespan, PUBLIC_URL
 from .routers import sismos, admin, seo
+from .version import __version__
 # from .exceptions import not_found_handler, jinja_undefined_handler, internal_error_handler
 
 
@@ -20,7 +21,7 @@ from .routers import sismos, admin, seo
 app = FastAPI(
     title="SismosVE API",
     description="API para datos de sismos de Venezuela desde FUNVISIS",
-    version="1.0.0",
+    version=__version__,
     lifespan=lifespan,
 )
 

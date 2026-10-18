@@ -8,6 +8,7 @@ from fastapi import APIRouter, HTTPException
 
 from ..models import ApiResponse
 from ..config import sismos_service, updater_service
+from ..version import __version__
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api", tags=["Administración"])
@@ -84,6 +85,7 @@ async def health_check():
 
         return {
             "status": status,
+            "version": __version__,
             "checks": {
                 "data_file_exists": data_exists,
                 "scheduler_running": scheduler_running,

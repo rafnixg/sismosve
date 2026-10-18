@@ -27,7 +27,9 @@ jobs:
           python-version: '3.14'
       - run: python -m pip install PyYAML==6.0.3 zizmor==1.31.1
       - name: Validate release policy and helper scripts
-        run: python .github/scripts/check_workflows.py
+        run: |
+          python .github/scripts/project_version.py --check
+          python .github/scripts/check_workflows.py
       - name: Validate Actions syntax and shell scripts
         run: |
           GOBIN="$RUNNER_TEMP/bin" go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.12

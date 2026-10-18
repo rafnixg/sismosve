@@ -69,4 +69,4 @@ jobs:
           if [[ "$PRERELEASE" == 'true' ]]; then
             flags+=(--prerelease --latest=false)
           fi
-          gh release create "$RELEASE_TAG" "${flags[@]}" docker-compose.yml nginx.conf requirements.txt
+          gh release create "$RELEASE_TAG" "${flags[@]}" VERSION CHANGELOG.md docker-compose.yml nginx.conf requirements.txt
