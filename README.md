@@ -25,7 +25,7 @@ Aplicación web moderna para visualizar y monitorear sismos en Venezuela usando 
 - **🌐 GitHub Container Registry** con builds multi-arquitectura
 
 ## 🛠️ Tecnologías
-- **Backend**: FastAPI + Python 3.13+ con arquitectura modular
+- **Backend**: FastAPI + Python 3.11+ con arquitectura modular (imagen Docker con Python 3.14)
 - **Frontend**: Svelte 5 + TypeScript + Vite + Leaflet.js
 - **Containerización**: Docker + Docker Compose
 - **CI/CD**: GitHub Actions con automated testing
@@ -318,7 +318,7 @@ Para soporte técnico o reportar bugs:
 
 ## UI Svelte: desarrollo y revisión local
 
-Requisitos: Node 22.12+ y Python compatible con las dependencias instaladas.
+Requisitos: Node 22.12+ (CI y builder Docker usan Node 22 LTS) y Python 3.11+.
 El documento HTML, SEO y CTA de FUNVISIS se sirven desde FastAPI; Svelte
 controla mapa, filtros y listado. El frontend conserva las rutas de la API.
 

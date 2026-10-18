@@ -41,7 +41,7 @@ El workflow de Docker no tiene `workflow_dispatch`. El mantenimiento manual solo
 
 ## CI y permisos
 
-El frontend se compila una sola vez y se comparte con Python 3.9, 3.11, 3.13 y 3.14. El artefacto incluye `.vite/manifest.json`, necesario para las pruebas de integración. También se comprueban cambios en `requirements.txt`; ya no se excluyen todos los `.txt`.
+El frontend se compila una sola vez y se comparte con Python 3.11, 3.12, 3.13 y 3.14. Python 3.9 y 3.10 [ya terminaron su soporte](https://devguide.python.org/versions/); las actualizaciones actuales de Uvicorn y python-multipart requieren al menos 3.10. La versión mínima soportada por este proyecto es 3.11 y la imagen de producción usa 3.14. El artefacto incluye `.vite/manifest.json`, necesario para las pruebas de integración. También se comprueban cambios en `requirements.txt`; ya no se excluyen todos los `.txt`.
 
 Los workflows parten de `contents: read`; cada job solicita únicamente las escrituras que necesita: GHCR para publicar, `security-events` para SARIF y `contents` para crear la release. Los PR no reciben permisos de publicación ni secretos de despliegue. Todos los Actions externos están fijados por SHA completo y checkout usa `persist-credentials: false`.
 
@@ -58,6 +58,8 @@ El domingo a las 02:00 UTC, o manualmente, `maintenance.yml`:
 Se retiraron las issues semanales basadas en el tamaño del JSON y la eliminación automática de versiones de GHCR. Un JSON no vacío no demuestra vulnerabilidades y borrar versiones por antigüedad puede destruir releases o manifiestos de varias arquitecturas.
 
 Dependabot contempla Python, npm en `/frontend`, Docker y Actions. **La configuración YAML de actualizaciones no activa Dependabot alerts ni security updates:** esas opciones deben habilitarse en Settings → Advanced Security del repositorio. El estado observado y las limitaciones del análisis están en [el informe de seguridad](security_best_practices_report.md).
+
+Vite, su plugin de Svelte y Vitest se actualizan en un mismo grupo para respetar sus dependencias entre sí. TypeScript 7 se aplaza mientras `svelte-check` solo acepte las ramas 5 y 6. Se conserva Node 22 LTS en CI y en el builder Docker; Node 26 se reconsiderará cuando entre en LTS según el [calendario oficial de Node.js](https://nodejs.org/en/about/previous-releases). Estas excepciones afectan únicamente a esas versiones y deben retirarse cuando se cumplan las condiciones de compatibilidad. Se mantienen las actualizaciones de parches y las auditorías de seguridad.
 
 Las alertas históricas del antiguo análisis `docker-build.yml:security-scan` pueden seguir visibles al cambiar de configuración. Después de un análisis nuevo en la rama por defecto, comparar los resultados por digest y retirar la configuración antigua desde Code Scanning si corresponde; no descartar alertas en bloque como falsos positivos.
 

@@ -6,6 +6,16 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    groups:
+      vite-toolchain:
+        patterns:
+          - "vite"
+          - "@sveltejs/vite-plugin-svelte"
+          - "vitest"
+    ignore:
+      # svelte-check 4 supports TypeScript 5 and 6, but not 7 yet.
+      - dependency-name: "typescript"
+        versions: [">=7.0.0 <8.0.0"]
     commit-message:
       prefix: "deps"
     labels:
@@ -45,6 +55,10 @@ updates:
       day: "tuesday"
       time: "09:00"
     open-pull-requests-limit: 2
+    ignore:
+      # Keep the validated Node 22 LTS toolchain; reassess 26 after its LTS transition.
+      - dependency-name: "node"
+        versions: ["~> 26.0"]
     assignees:
       - "rafnixg"
     commit-message:

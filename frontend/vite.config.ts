@@ -8,7 +8,9 @@ export default defineConfig({
     outDir: '../static/ui',
     emptyOutDir: true,
     manifest: true,
-    rollupOptions: {
+    // Preserve Vite 7's browser baseline when upgrading the bundler.
+    target: ['chrome107', 'edge107', 'firefox104', 'safari16'],
+    rolldownOptions: {
       input: { main: 'src/main.ts', legal: 'src/legal.css' },
       output: {
         // Static legal pages can load their styles without a JavaScript runtime.
