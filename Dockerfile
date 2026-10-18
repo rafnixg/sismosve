@@ -1,4 +1,4 @@
-FROM node:22-bookworm-slim AS frontend
+FROM node:26-bookworm-slim AS frontend
 WORKDIR /ui
 COPY frontend/package*.json ./frontend/
 RUN cd frontend && npm ci
