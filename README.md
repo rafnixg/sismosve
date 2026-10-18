@@ -7,7 +7,7 @@
 [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?logo=docker&logoColor=white)](https://github.com/rafnixg/sismosve/pkgs/container/sismosve)
 [![GitHub stars](https://img.shields.io/github/stars/rafnixg/sismosve.svg?style=social&label=Star)](https://github.com/rafnixg/sismosve)
 
-**Versión del código: `0.3.1`**. Consulta el [historial de cambios](CHANGELOG.md)
+**Versión del código: `0.3.2`**. Consulta el [historial de cambios](CHANGELOG.md)
 y las [releases publicadas](https://github.com/rafnixg/sismosve/releases).
 
 ## 🎯 Descripción
@@ -267,7 +267,35 @@ La aplicación está optimizada para:
 
 ## 📄 Licencia
 
-Este proyecto es de uso educativo y científico para el monitoreo de actividad sísmica en Venezuela.
+El código y los materiales originales de SismosVE se publican bajo **GNU
+Affero General Public License, versión 3 únicamente (AGPL-3.0-only)**, con una
+condición adicional de atribución razonable conforme a su sección 7(b).
+Copyright © 2025–2026 Rafnix Guzman (@rafnixg).
+
+Puedes usarlos, modificarlos y redistribuirlos, incluso comercialmente,
+cumpliendo [LICENSE](LICENSE) y [NOTICE](NOTICE). El software se proporciona
+sin garantía. En los avisos legales apropiados de las interfaces que contengan
+ese material debe conservarse este crédito legible:
+
+> SismosVE - desarrollado originalmente por Rafnix Guzman (@rafnixg).
+
+La condición no exige un logo ni una ubicación fija. Si ofreces una versión
+modificada por red, debes ofrecer a sus usuarios el código fuente correspondiente
+de esa versión, conforme a la sección 13. No basta con enlazar este repositorio
+si tu versión contiene cambios que aquí no están disponibles.
+
+La interfaz muestra el crédito y enlaza `/license`, `/notice` y `/source`,
+disponibles también sin JavaScript. **`SOURCE_URL` debe apuntar a una descarga
+del código exacto de la versión desplegada, accesible a sus usuarios**. En los
+builds de release se fija al archivo del commit publicado. Para builds manuales
+o forks, configura `--build-arg SOURCE_URL=https://…/archivo-del-commit.tar.gz`
+o la variable de entorno `SOURCE_URL` al desplegar. En desarrollo, por defecto
+enlaza el repositorio original. No incluyas credenciales en esa URL.
+
+Los datos de FUNVISIS y los materiales de terceros conservan sus propios
+derechos y condiciones: esta licencia no los relicencia. Las licencias del
+frontend de terceros se generan durante el build y están disponibles en
+`/static/ui/third-party-licenses.txt`.
 
 ## 🤝 Contribuciones
 
@@ -309,8 +337,10 @@ Compose conserva la versión de la imagen y no declara otra versión de la aplic
 
 Antes de preparar una release:
 
+Sustituye `MAJOR.MINOR.PATCH` por el número de la nueva versión.
+
 ```bash
-python .github/scripts/project_version.py --set 0.3.1
+python .github/scripts/project_version.py --set MAJOR.MINOR.PATCH
 # Actualizar CHANGELOG.md con los cambios de la versión
 python .github/scripts/project_version.py --check
 ```
@@ -322,6 +352,7 @@ el release antes del build. No se modifican tags ya publicados. Consulta el
 
 ### Historial reciente
 
+- **v0.3.1**: Versionado consistente y remediación de la imagen para superar los controles de seguridad.
 - **v0.3.0**: UI Svelte, SEO, persistencia del JSON, dependencias y publicación por tags.
 - **v0.2.0**: Organización modular del backend FastAPI.
 - **v0.1.x**: Versiones iniciales.

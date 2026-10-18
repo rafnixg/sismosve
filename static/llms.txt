@@ -76,10 +76,19 @@ Cuando uses datos de SismosVE:
 - No incluye microsismos ni eventos no detectados
 
 ## Política de Datos
-- Datos de dominio público para fines educativos y de seguridad
+- Datos de FUNVISIS, sujetos a los derechos y condiciones de su fuente
 - No se almacena información personal de usuarios
 - Cacheo temporal para optimización de performance
 - Respaldo automático de datos para continuidad del servicio
+
+## Licencia del Código
+- Código original: AGPL-3.0-only con atribución razonable bajo la sección 7(b)
+- Autor original: Rafnix Guzman (@rafnixg), copyright 2025–2026
+- Texto completo: /license; condición de atribución: /notice
+- Código fuente de la versión desplegada: /source
+- Se permite uso comercial conforme a la licencia; el software se ofrece sin garantía
+- Las versiones modificadas ofrecidas por red deben ofrecer su código correspondiente a sus usuarios
+- Datos y materiales de terceros conservan sus propios derechos y condiciones
 
 ## Contacto y Soporte
 - Para problemas técnicos: API incluye endpoint /api/health
@@ -87,7 +96,7 @@ Cuando uses datos de SismosVE:
 - Documentación técnica: Disponible en repositorio del proyecto
 
 ## Última Actualización
-Versión: 0.3.1
+Versión: 0.3.2
 Fecha: 2026-10-18
 Arquitectura: FastAPI modular y Svelte 5 con SEO servido desde el backend
 Estado: Producción activa

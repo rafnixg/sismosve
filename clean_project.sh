@@ -1,4 +1,7 @@
 #!/bin/bash
+# Copyright (C) 2025-2026 Rafnix Guzman (@rafnixg).
+# SPDX-License-Identifier: AGPL-3.0-only
+# Additional author-attribution term under section 7(b): see repository-root NOTICE.
 """
 Script de limpieza automática para SismosVE
 Elimina archivos temporales, logs y cachés

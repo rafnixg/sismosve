@@ -1,3 +1,6 @@
+# Copyright (C) 2025-2026 Rafnix Guzman (@rafnixg).
+# SPDX-License-Identifier: AGPL-3.0-only
+# Additional author-attribution term under section 7(b): see repository-root NOTICE.
 FROM --platform=$BUILDPLATFORM node:22-bookworm-slim AS frontend
 WORKDIR /ui
 COPY frontend/package*.json ./frontend/
@@ -23,11 +26,13 @@ RUN python -m venv /opt/venv && \
 FROM python:3.14-alpine3.24
 
 # Metadata
-ARG APP_VERSION=0.3.1
+ARG APP_VERSION=0.3.2
+ARG SOURCE_URL=https://github.com/rafnixg/sismosve
 LABEL maintainer="SismosVE Team"
 LABEL description="Aplicación web para monitoreo de sismos en Venezuela"
 LABEL version="${APP_VERSION}"
 LABEL org.opencontainers.image.version="${APP_VERSION}"
+LABEL org.opencontainers.image.licenses="AGPL-3.0-only"
 
 # Crear usuario no-root para seguridad
 RUN addgroup -g 10001 sismosve && \
@@ -65,6 +70,7 @@ ENV PORT=8000
 ENV HOST=0.0.0.0
 ENV LOG_FILE=/app/logs/sismos_api.log
 ENV DATA_FILE=/app/data/sismosve.json
+ENV SOURCE_URL=${SOURCE_URL}
 
 # Crear directorio para logs y dar permisos de escritura al directorio completo
 RUN mkdir -p /app/logs /app/data && \

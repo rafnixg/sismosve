@@ -5,6 +5,18 @@ Las versiones siguen [Semantic Versioning](https://semver.org/). Una entrada
 las imágenes versionadas solo se consideran aprobados cuando el workflow de
 release completa sus controles de seguridad.
 
+## [0.3.2] - Sin publicar
+
+- Licencia GNU AGPLv3 únicamente, con atribución razonable conforme a la
+  sección 7(b), documentada en LICENSE y NOTICE.
+- Crédito visible a Rafnix Guzman (@rafnixg) y enlaces a la licencia,
+  atribución y código fuente en el mapa y las páginas legales.
+- Oferta de código correspondiente configurable mediante SOURCE_URL;
+  los releases enlazan al archivo del commit exacto.
+- Metadatos npm, OpenAPI y Docker y términos de uso coherentes con la licencia,
+  con uso comercial permitido y derechos de terceros separados.
+- Generación de las licencias de dependencias incluidas en el frontend.
+
 ## [0.3.1] - 2026-10-18
 
 - Se centraliza la versión de la aplicación en `VERSION` y se sincronizan los

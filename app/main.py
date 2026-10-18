@@ -1,3 +1,6 @@
+# Copyright (C) 2025-2026 Rafnix Guzman (@rafnixg).
+# SPDX-License-Identifier: AGPL-3.0-only
+# Additional author-attribution term under section 7(b): see repository-root NOTICE.
 """
 Aplicación principal FastAPI para sismos de Venezuela - Modular
 """
@@ -12,7 +15,7 @@ from fastapi.templating import Jinja2Templates
 # from jinja2 import UndefinedError
 
 from .config import lifespan, PUBLIC_URL
-from .routers import sismos, admin, seo
+from .routers import sismos, admin, seo, legal
 from .version import __version__
 # from .exceptions import not_found_handler, jinja_undefined_handler, internal_error_handler
 
@@ -20,8 +23,19 @@ from .version import __version__
 # Crear aplicación FastAPI
 app = FastAPI(
     title="SismosVE API",
-    description="API para datos de sismos de Venezuela desde FUNVISIS",
+    description=(
+        "API para datos de sismos de Venezuela desde FUNVISIS.\n\n"
+        "SismosVE - desarrollado originalmente por Rafnix Guzman (@rafnixg). "
+        "Copyright © 2025–2026. Software sin garantía; puedes modificarlo y "
+        "redistribuirlo bajo [AGPLv3](/license), con la "
+        "[condición de atribución de la sección 7(b)](/notice). "
+        "[Código fuente de esta versión](/source)."
+    ),
     version=__version__,
+    license_info={
+        "name": "GNU AGPLv3 with author attribution under section 7(b)",
+        "url": PUBLIC_URL + "/license",
+    },
     lifespan=lifespan,
 )
 
@@ -54,6 +68,7 @@ async def home(request: Request):
 app.include_router(sismos.router)
 app.include_router(admin.router)
 app.include_router(seo.router)
+app.include_router(legal.router)
 
 # Configurar manejadores de excepciones (por implementar)
 # app.add_exception_handler(UndefinedError, jinja_undefined_handler)

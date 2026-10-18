@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (C) 2025-2026 Rafnix Guzman (@rafnixg).
+# SPDX-License-Identifier: AGPL-3.0-only
+# Additional author-attribution term under section 7(b): see repository-root NOTICE.
 """
 Script para mantener actualizado el archivo de sismos de FUNVISIS
 Descarga los datos cada 5 minutos y actualiza el archivo local

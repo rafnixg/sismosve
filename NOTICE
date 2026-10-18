@@ -1,0 +1,41 @@
+SismosVE
+Copyright (C) 2025-2026 Rafnix Guzman (@rafnixg).
+
+The original SismosVE software is licensed under the GNU Affero General
+Public License, version 3 only (AGPL-3.0-only). See LICENSE for the complete,
+unmodified license text. Third-party materials retain their own licenses.
+
+Additional term under GNU AGPLv3 section 7(b)
+-------------------------------------------
+For SismosVE material authored by Rafnix Guzman, you must preserve the
+following reasonable author attribution in the Appropriate Legal Notices
+displayed by works containing that material:
+
+  SismosVE - desarrollado originalmente por Rafnix Guzman (@rafnixg).
+
+The attribution must remain reasonably visible and legible within those
+legal notices. An equivalent translation preserving the author's identity
+and the original project's name is acceptable. This condition requires no
+particular screen position, advertising banner, logo, or endorsement.
+
+This is an additional term under section 7(b), not a replacement for the
+GNU AGPLv3. It applies only to material for which Rafnix Guzman holds the
+relevant rights. It does not change third-party license terms or license
+FUNVISIS data, third-party maps, fonts, or other third-party materials.
+
+Source availability
+-------------------
+Project: https://github.com/rafnixg/sismosve
+Original author: https://github.com/rafnixg
+
+The application provides a visible source link at /source. Operators of
+modified network deployments must offer the Corresponding Source of their
+running version to its remote users as required by section 13. A link to
+the original project alone is insufficient if it omits their changes.
+Set SOURCE_URL to a download of that deployment's exact source accessible
+to its users, including the scripts needed to build and run it. Release builds set this
+URL to a source archive of the exact Git commit.
+
+The software is provided without warranty as stated in LICENSE. Subject
+to that license and this section 7(b) term, you may use, modify and
+redistribute the software, including commercially.
