@@ -11,7 +11,7 @@ RUN cd frontend && npm run check && npm run test && npm run build
 
 # Multi-stage Dockerfile para SismosVE
 # Etapa 1: Builder - Instalar dependencias
-FROM python:3.14-alpine3.24 AS builder
+FROM python:3.15-alpine3.24 AS builder
 
 # Crear directorio para las dependencias
 WORKDIR /app
@@ -23,7 +23,7 @@ RUN python -m venv /opt/venv && \
     /opt/venv/bin/python -m pip uninstall -y pip
 
 # Etapa 2: Runtime - Imagen final optimizada
-FROM python:3.14-alpine3.24
+FROM python:3.15-alpine3.24
 
 # Metadata
 ARG APP_VERSION=0.3.2
